@@ -17,11 +17,11 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    background-color: #f6f6f6;
+    padding: 1rem 0;
+}
+
+div[data-overlay-container] {
+    width: fit-content;
+    margin: 0 auto;
 }

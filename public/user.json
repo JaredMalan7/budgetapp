@@ -1,0 +1,14 @@
+{
+    "name": "Jared",
+    "lastName": "Malan",
+    "id": 1,
+    "card": {
+        "type" : "",
+        "cardColor" : "",
+        "progressBarColor" : "",
+        "card#" : "402"
+    },
+    "budget": 1000,
+    "transactions": []
+}
+
