@@ -3,10 +3,10 @@
     "lastName": "Malan",
     "id": 1,
     "card": {
-        "type" : "",
+        "type" : "faCcDiscover",
         "cardColor" : "",
-        "progressBarColor" : "",
-        "card#" : "402"
+        "progressBarColor" : "royalBlue",
+        "card#" : "403"
     },
     "budget": 1000,
     "transactions": []
