@@ -1,0 +1,14 @@
+{
+    "name": "Jared",
+    "lastName": "Malan",
+    "id": 1,
+    "card": {
+        "type" : "faCcDiscover",
+        "cardColor" : "",
+        "progressBarColor" : "royalBlue",
+        "card#" : "403"
+    },
+    "budget": 1000,
+    "transactions": []
+}
+

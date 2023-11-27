@@ -1,7 +1,7 @@
 'use client'
 import React from "react"
 import { useEffect, useState } from "react"
-import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
+import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard, IconDefinition } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Button } from '@nextui-org/button'
 
@@ -73,8 +73,9 @@ export function CreditCard() {
 
                 </div>
                 <div id="cardType">
-                    {getCardIcon() && <FontAwesomeIcon icon={getCardIcon()} className="h-[40px]" />}
+                    {getCardIcon() && <FontAwesomeIcon icon={getCardIcon() as IconDefinition} className="h-[40px]" />}
                 </div>
+
             </div>
         </div>
     )

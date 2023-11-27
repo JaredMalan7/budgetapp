@@ -1,7 +1,6 @@
 'use client'
 import React from "react"
 import { useEffect, useState } from "react"
-import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard, } from "@fortawesome/free-brands-svg-icons"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Button } from '@nextui-org/button'
