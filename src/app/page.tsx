@@ -1,13 +1,13 @@
 import React from "react"
 import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Greet, CreditCard, PageTabs, WeekTransactions } from "./components"
+import { Greet, CreditCard, PageTabs, WeekTransactions, Footer } from "./components"
 import { Button } from "@nextui-org/react"
 
 export default function Home() {
 
     return (
-        <div className="">
+        <div className="flex flex-col min-h-screen">
             {/* <FontAwesomeIcon icon={faCcVisa} className="w-[30px]" />
             <div>
                 <Button>Click me</Button>
@@ -24,7 +24,9 @@ export default function Home() {
             <div>
                 <WeekTransactions></WeekTransactions>
             </div>
-
+            <div className="">
+                <Footer></Footer>
+            </div>
         </div>
 
 

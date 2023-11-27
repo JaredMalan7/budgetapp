@@ -8,9 +8,12 @@ import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-ic
 
 export function WeekTransactions() {
 
+
+
     return (
-        <div>
+        <div className="">
             <div className="flex justify-around">
+                {/* ============== Budget ================= */}
                 <div className="bg-white p-4 flex place-items-center rounded-2xl gap-3">
                     <div className="bg-mint py-2 px-3 rounded-full">
                         <FontAwesomeIcon icon={faArrowTrendUp} className="text-pistachio " />
@@ -24,7 +27,7 @@ export function WeekTransactions() {
                         </div>
                     </div>
                 </div>
-
+                {/* ============ Balance ============== */}
                 <div className="bg-white p-4 flex place-items-center rounded-2xl gap-3">
                     <div className="bg-pale py-2 px-3 rounded-full">
                         <FontAwesomeIcon icon={faArrowTrendDown} className="text-mandarin " />
@@ -34,7 +37,7 @@ export function WeekTransactions() {
                             -76%
                         </div>
                         <div>
-                            Expenses
+                            Balance
                         </div>
                     </div>
                 </div>
