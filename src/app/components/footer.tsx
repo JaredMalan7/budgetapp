@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Button } from '@nextui-org/button'
 
 
-export function Footer({ onIconClick }) {
+export function Footer({ onIconClick }: any) {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 flex justify-center mt-6 mb-6">

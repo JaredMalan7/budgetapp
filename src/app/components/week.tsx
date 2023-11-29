@@ -7,7 +7,7 @@ import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-ic
 
 
 
-export function WeekTransactions({ showNewExpense, onCreateNewExpense }) {
+export function WeekTransactions({ showNewExpense, onCreateNewExpense }: any) {
     useEffect(() => {
         if (showNewExpense) {
             console.log('Creating a new expense div')
