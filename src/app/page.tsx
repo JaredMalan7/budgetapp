@@ -11,19 +11,12 @@ export default function Home() {
     const [showNewExpense, setNewExpense] = useState(false)
 
     const handleIconClick = () => {
-        setNewExpense(!showNewExpense)
-
-        if (!showNewExpense) {
-            const weekExpenses = document.querySelector('.weekExpenses')
-            console.log('weekExpenses: ', weekExpenses)
-            const setNewExpenseDiv = document.createElement('div')
-            setNewExpenseDiv.textContent = 'New Expense'
-            weekExpenses?.appendChild(setNewExpenseDiv)
-        }
-    }
-
-    const handleCreateNewExpense = () => {
-        setNewExpense(false)
+        setNewExpense((prevShowNewExpense) => {
+            console.log("Previous State:", prevShowNewExpense)
+            const newState = !prevShowNewExpense
+            console.log("New State:", newState)
+            return newState;
+        })
     }
 
     return (
@@ -42,7 +35,7 @@ export default function Home() {
                 <PageTabs></PageTabs>
             </div>
             <div>
-                <WeekTransactions showNewExpense={showNewExpense} onCreateNewExpense={handleCreateNewExpense}></WeekTransactions>
+                <WeekTransactions showNewExpense={showNewExpense}></WeekTransactions>
             </div>
             <div className="">
                 <Footer onIconClick={handleIconClick}></Footer>

@@ -7,13 +7,20 @@ import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-ic
 
 
 
-export function WeekTransactions({ showNewExpense, onCreateNewExpense }: any) {
+export function WeekTransactions({ showNewExpense }: any) {
+    console.log('weekTransactions rendered')
     useEffect(() => {
+
         if (showNewExpense) {
-            console.log('Creating a new expense div')
-            onCreateNewExpense()
+            console.log('creating a new expense div')
+            const weekExpenses = document.querySelector('.weekExpenses')
+            // console.log('weekExpenses: ', weekExpenses)
+            const setNewExpenseDiv = document.createElement('div')
+            setNewExpenseDiv.textContent = 'New Expense'
+            weekExpenses?.appendChild(setNewExpenseDiv)
         }
-    }, [showNewExpense, onCreateNewExpense])
+
+    }, [showNewExpense])
 
 
     return (
