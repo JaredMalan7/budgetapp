@@ -43,9 +43,6 @@ export default function Home() {
             </div>
             <div>
                 <WeekTransactions showNewExpense={showNewExpense} onCreateNewExpense={handleCreateNewExpense}></WeekTransactions>
-                <div id="transactionsContainer" className="flex flex-col justify-center text-center mt-6 ">
-                    Transactions go here
-                </div>
             </div>
             <div className="">
                 <Footer onIconClick={handleIconClick}></Footer>
