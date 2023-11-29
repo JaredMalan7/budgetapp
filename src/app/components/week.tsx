@@ -6,12 +6,18 @@ import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-ic
 
 
 
-export function WeekTransactions() {
 
+export function WeekTransactions({ showNewExpense, onCreateNewExpense }) {
+    useEffect(() => {
+        if (showNewExpense) {
+            console.log('Creating a new expense div')
+            onCreateNewExpense()
+        }
+    }, [showNewExpense, onCreateNewExpense])
 
 
     return (
-        <div className="">
+        <div className="weekExpenses">
             <div className="flex justify-around">
                 {/* ============== Budget ================= */}
                 <div className="bg-white p-4 flex place-items-center rounded-2xl gap-3">
