@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Greet, CreditCard, PageTabs, WeekTransactions, Footer } from "./components"
+import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, TransactionsMenu } from "./components"
 import { Button } from "@nextui-org/react"
 
 
@@ -11,12 +11,7 @@ export default function Home() {
     const [showNewExpense, setNewExpense] = useState(false)
 
     const handleIconClick = () => {
-        setNewExpense((prevShowNewExpense) => {
-            console.log("Previous State:", prevShowNewExpense)
-            const newState = !prevShowNewExpense
-            console.log("New State:", newState)
-            return newState;
-        })
+        setNewExpense(!showNewExpense)
     }
 
     return (
@@ -36,6 +31,7 @@ export default function Home() {
             </div>
             <div>
                 <WeekTransactions showNewExpense={showNewExpense}></WeekTransactions>
+
             </div>
             <div className="">
                 <Footer onIconClick={handleIconClick}></Footer>
