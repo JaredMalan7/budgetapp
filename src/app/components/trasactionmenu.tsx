@@ -37,7 +37,7 @@ export function TransactionsMenu() {
     return (
         <Dropdown>
             <DropdownTrigger>
-                <Button variant="bordered">
+                <Button variant="flat" style={{ padding: 0, textAlign: 'center' }}>
                     <FontAwesomeIcon icon={selectedItem.icon} style={{ marginRight: '8px' }} />
                 </Button>
             </DropdownTrigger>
