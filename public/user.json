@@ -9,6 +9,12 @@
         "card#" : "403"
     },
     "budget": 1000,
-    "transactions": []
+    "transactions": [{
+        "transactionId": 1,
+        "transactionType": "Income",
+        "transactionName": "Salary",
+        "transactionBalance": 2000.00,
+        "transactionDate": ""
+    }]
 }
 

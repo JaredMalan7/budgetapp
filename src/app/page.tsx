@@ -15,7 +15,7 @@ export default function Home() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen mb-20">
             {/* <FontAwesomeIcon icon={faCcVisa} className="w-[30px]" />
             <div>
                 <Button>Click me</Button>
