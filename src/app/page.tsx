@@ -48,7 +48,7 @@ export default function Home() {
 
 
             <div>
-                <WeekTransactions showNewExpense={showNewExpense} onCreateNewExpense={handleCreateNewExpense}></WeekTransactions>
+                <WeekTransactions></WeekTransactions>
             </div>
             <div className="">
                 <Footer onIconClick={handleIconClick}></Footer>
