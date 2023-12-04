@@ -2,8 +2,7 @@
 import React, { useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowTrendUp, faArrowTrendDown, faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard } from "@fortawesome/free-solid-svg-icons"
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react"
+import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-icons"
 import { TransactionsMenu } from "./trasactionmenu"
 
 export function WeekTransactions({ showNewExpense }: any) {

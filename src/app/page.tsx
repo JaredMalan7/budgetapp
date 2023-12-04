@@ -13,6 +13,15 @@ export default function Home() {
     const handleIconClick = () => {
         setNewExpense(!showNewExpense)
     }
+    const currentDate = new Date()
+    // Get individual components of the local date
+    const year = currentDate.getFullYear()
+    const month = currentDate.getMonth() + 1 // Month is zero-based, so add 1
+    const day = currentDate.getDate()
+
+    const localDate = `${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}-${year}`
+
+    console.log('Local Date: ', localDate)
 
     return (
         <div className="flex flex-col min-h-screen mb-20">
