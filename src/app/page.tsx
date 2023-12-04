@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Greet, CreditCard, PageTabs, WeekTransactions, Footer } from "./components"
+import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, BudgetOverview } from "./components"
 import { Button } from "@nextui-org/react"
 
 
@@ -41,6 +41,12 @@ export default function Home() {
             <div className="">
                 <PageTabs></PageTabs>
             </div>
+
+            <div>
+                <BudgetOverview />
+            </div>
+
+
             <div>
                 <WeekTransactions showNewExpense={showNewExpense} onCreateNewExpense={handleCreateNewExpense}></WeekTransactions>
             </div>
