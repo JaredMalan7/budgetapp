@@ -4,10 +4,21 @@ import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/f
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, BudgetOverview } from "./components"
 import { Button } from "@nextui-org/react"
-
+import { createContext } from "vm"
+import { TransactionsContext } from "./components/TransactionsContext"
 
 
 export default function Home() {
+
+    const [transactions, setTransactions] = useState([{
+        "transactionId": 1,
+        "transactionType": "Transportation",
+        "transactionName": "Gas",
+        "transactionBalance": -90.00,
+        "month": 12,
+        "day": 4,
+        "year": 2023
+    }])
     const [showNewExpense, setNewExpense] = useState(false)
 
     const handleIconClick = () => {
@@ -27,34 +38,37 @@ export default function Home() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
-            {/* <FontAwesomeIcon icon={faCcVisa} className="w-[30px]" />
+        <TransactionsContext.Provider value={{
+            transactions, setTransactions
+        }}>
+            <div className="flex flex-col min-h-screen">
+                {/* <FontAwesomeIcon icon={faCcVisa} className="w-[30px]" />
             <div>
                 <Button>Click me</Button>
             </div> */}
-            <div className="mb-4 mt-6">
-                <Greet></Greet>
-            </div>
-            <div className="mb-6">
-                <CreditCard></CreditCard>
-            </div>
-            <div className="">
-                <PageTabs></PageTabs>
-            </div>
+                <div className="mb-4 mt-6">
+                    <Greet></Greet>
+                </div>
+                <div className="mb-6">
+                    <CreditCard></CreditCard>
+                </div>
+                <div className="">
+                    <PageTabs></PageTabs>
+                </div>
 
-            <div>
-                <BudgetOverview />
-            </div>
-
-
-            <div>
-                <WeekTransactions></WeekTransactions>
-            </div>
-            <div className="">
-                <Footer onIconClick={handleIconClick}></Footer>
-            </div>
-        </div>
+                <div>
+                    <BudgetOverview />
+                </div>
 
 
+                <div>
+                    <WeekTransactions></WeekTransactions>
+                </div>
+                <div className="">
+                    <Footer onIconClick={handleIconClick}></Footer>
+                </div>
+            </div>
+
+        </TransactionsContext.Provider>
     )
 }
