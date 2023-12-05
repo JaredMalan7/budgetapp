@@ -9,7 +9,7 @@ import { faArrowTrendUp, faArrowTrendDown } from "@fortawesome/free-solid-svg-ic
 export function BudgetOverview() {
 
     return (
-        <div className="weekExpenses">
+        <div className="">
             <div className="flex justify-around">
                 {/* ============== Budget ================= */}
                 <div className="bg-white p-4 flex place-items-center rounded-2xl gap-3">
