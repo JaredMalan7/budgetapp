@@ -191,7 +191,7 @@
     },
     {
         "transactionId": 21,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 12,

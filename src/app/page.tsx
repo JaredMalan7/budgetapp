@@ -2,10 +2,11 @@
 import React, { useState } from "react"
 import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, BudgetOverview, MonthTransactions } from "./components"
+import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, BudgetOverview, MonthTransactions, YearTransactions } from "./components"
 import { Button } from "@nextui-org/react"
 import { createContext } from "vm"
 import { TransactionsContext } from "./components/TransactionsContext"
+
 
 
 export default function Home() {
@@ -63,7 +64,8 @@ export default function Home() {
 
                 <div>
                     {/* <WeekTransactions></WeekTransactions> */}
-                    <MonthTransactions></MonthTransactions>
+                    {/* <MonthTransactions></MonthTransactions> */}
+                    <YearTransactions></YearTransactions>
                 </div>
                 <div className="">
                     <Footer onIconClick={handleIconClick}></Footer>
