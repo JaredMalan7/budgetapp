@@ -38,7 +38,7 @@
     },
     {
         "transactionId": 4,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 12,
@@ -92,7 +92,7 @@
     },
     {
         "transactionId": 10,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 7,
@@ -164,7 +164,7 @@
     },
     {
         "transactionId": 18,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 8,
@@ -173,7 +173,7 @@
     },
     {
         "transactionId": 19,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 12,
@@ -182,7 +182,7 @@
     },
     {
         "transactionId": 20,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": -3000.00,
         "month": 10,
@@ -200,7 +200,7 @@
     },
     {
         "transactionId": 22,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": -1000.00,
         "month": 8,
@@ -209,7 +209,7 @@
     },
     {
         "transactionId": 23,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": -400.00,
         "month": 12,
@@ -218,7 +218,7 @@
     },
     {
         "transactionId": 24,
-        "transactionType": "Income",
+        "transactionType": "Other",
         "transactionName": "Salary",
         "transactionBalance": 2000.00,
         "month": 11,
