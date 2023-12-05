@@ -32,7 +32,14 @@ export function YearTransactions() {
 
                 const transactionsData = userData.transactions || [];
 
-                setTransactions(transactionsData);
+                // Sort all transactions by date in descending order
+                const sortedTransactions = transactionsData.sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
+                    const dateA: Date = new Date(a.year, a.month - 1, a.day);
+                    const dateB: Date = new Date(b.year, b.month - 1, b.day);
+                    return dateB.getTime() - dateA.getTime();
+                });
+
+                setTransactions(sortedTransactions);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

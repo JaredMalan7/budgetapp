@@ -224,6 +224,15 @@
         "month": 11,
         "day": 4,
         "year": 2017
+    },
+    {
+        "transactionId": 25,
+        "transactionType": "Other",
+        "transactionName": "Salary",
+        "transactionBalance": -1000.00,
+        "month": 12,
+        "day": 5,
+        "year": 2023
     }]
 }
 

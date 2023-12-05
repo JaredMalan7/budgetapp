@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowTrendUp, faArrowTrendDown, faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition } from "@fortawesome/free-solid-svg-icons"
+import { faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition } from "@fortawesome/free-solid-svg-icons"
 import { useTransactions } from "./TransactionsContext"
 
 
@@ -33,16 +33,23 @@ export function WeekTransactions() {
 
                 // Filter transactions for the current week
                 const currentDate = new Date();
-                const currentWeekTransactions = transactionsData.filter((transaction: { year: number; month: number; day: number | undefined }) => {
-                    const transactionDate = new Date(transaction.year, transaction.month - 1, transaction.day);
-                    return (
-                        transactionDate.getFullYear() === currentDate.getFullYear() &&
-                        transactionDate.getMonth() === currentDate.getMonth() &&
-                        transactionDate.getDate() >= currentDate.getDate() - currentDate.getDay() &&
-                        transactionDate.getDate() <= currentDate.getDate() + (6 - currentDate.getDay())
-                    );
-                });
+                const currentWeekTransactions = transactionsData
+                    .filter((transaction: { year: number; month: number; day: number | undefined }) => {
+                        const transactionDate = new Date(transaction.year, transaction.month - 1, transaction.day);
+                        return (
+                            transactionDate.getFullYear() === currentDate.getFullYear() &&
+                            transactionDate.getMonth() === currentDate.getMonth() &&
+                            transactionDate.getDate() >= currentDate.getDate() - currentDate.getDay() &&
+                            transactionDate.getDate() <= currentDate.getDate() + (6 - currentDate.getDay())
+                        );
+                    })
+                    .sort((a: { year: number; month: number; day: number | undefined }, b: { year: number; month: number; day: number | undefined }) => {
+                        const dateA: Date = new Date(a.year, a.month - 1, a.day);
+                        const dateB: Date = new Date(b.year, b.month - 1, b.day);
+                        return dateB.getTime() - dateA.getTime();
+                    });
 
+                // Set the transactions without reversing the order
                 setTransactions(currentWeekTransactions);
             } catch (error) {
                 console.error('Error fetching data:', error);

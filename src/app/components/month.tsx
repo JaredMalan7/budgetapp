@@ -33,10 +33,17 @@ export function MonthTransactions() {
                 const transactionsData = userData.transactions || [];
 
                 // Filter transactions for the current year
-                const currentYearTransactions = transactionsData.filter((transaction: { year: number; month: number; day: number | undefined }) => {
-                    const currentDate = new Date();
-                    return transaction.year === currentDate.getFullYear();
-                });
+                const currentYearTransactions = transactionsData
+                    .filter((transaction: { year: number; month: number; day: number | undefined }) => {
+                        const currentDate = new Date();
+                        return transaction.year === currentDate.getFullYear();
+                    })
+                    .sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
+                        // Sort transactions by date in descending order
+                        const dateA: Date = new Date(a.year, a.month - 1, a.day);
+                        const dateB: Date = new Date(b.year, b.month - 1, b.day);
+                        return dateB.getTime() - dateA.getTime();
+                    });
 
                 setTransactions(currentYearTransactions);
             } catch (error) {

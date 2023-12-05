@@ -68,7 +68,7 @@ export default function Home() {
                     <YearTransactions></YearTransactions>
                 </div>
                 <div className="">
-                    <Footer onIconClick={handleIconClick}></Footer>
+                    <Footer></Footer>
                 </div>
             </div>
 
