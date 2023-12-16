@@ -22,41 +22,26 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function MonthTransactions() {
-    const { transactions, setTransactions } = useTransactions();
+    const { transactions } = useTransactions();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('./user.json');
-                const userData = await response.json();
+    // Filter transactions for the current year
+    const currentMonthTransactions = transactions
+        .filter((transaction: { year: number; month: number; day: number | undefined }) => {
+            const currentDate = new Date();
+            return transaction.year === currentDate.getFullYear();
+        })
+        .sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
+            // Sort transactions by date in descending order
+            const dateA: Date = new Date(a.year, a.month - 1, a.day);
+            const dateB: Date = new Date(b.year, b.month - 1, b.day);
+            return dateB.getTime() - dateA.getTime();
+        });
 
-                const transactionsData = userData.transactions || [];
 
-                // Filter transactions for the current year
-                const currentYearTransactions = transactionsData
-                    .filter((transaction: { year: number; month: number; day: number | undefined }) => {
-                        const currentDate = new Date();
-                        return transaction.year === currentDate.getFullYear();
-                    })
-                    .sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
-                        // Sort transactions by date in descending order
-                        const dateA: Date = new Date(a.year, a.month - 1, a.day);
-                        const dateB: Date = new Date(b.year, b.month - 1, b.day);
-                        return dateB.getTime() - dateA.getTime();
-                    });
-
-                setTransactions(currentYearTransactions);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, [setTransactions]);
-
+    if (!currentMonthTransactions.length) return <span>No transactions found for this month</span>
     return (
         <div className="monthExpenses mt-6 mb-20">
-            {transactions.map((transaction) => (
+            {currentMonthTransactions.map((transaction) => (
                 <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={transaction.transactionId}>
                     <div className="px-4">
                         <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />

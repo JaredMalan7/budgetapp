@@ -1,17 +1,20 @@
 'use client'
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Greet, CreditCard, PageTabs, WeekTransactions, Footer, BudgetOverview, MonthTransactions, YearTransactions } from "./components"
 import { Button } from "@nextui-org/react"
 import { createContext } from "vm"
-import { TransactionsContext } from "./components/TransactionsContext"
+import { TransactionsContext, useTransactions } from "./components/TransactionsContext"
+import { useRouter } from "next/router"
 
 
 
 export default function Home() {
 
-    const [transactions, setTransactions] = useState([{
+
+    const [transactionsState, setTransactionsState] = useState([{
+        //TODO: this can be cleaned up now
         "transactionId": 1,
         "transactionType": "Transportation",
         "transactionName": "Gas",
@@ -22,25 +25,11 @@ export default function Home() {
     }])
     const [showNewExpense, setNewExpense] = useState(false)
 
-    const handleIconClick = () => {
-        setNewExpense(!showNewExpense)
 
-        if (!showNewExpense) {
-            const weekExpenses = document.querySelector('.weekExpenses')
-            console.log('weekExpenses: ', weekExpenses)
-            const setNewExpenseDiv = document.createElement('div')
-            setNewExpenseDiv.textContent = 'New Expense'
-            weekExpenses?.appendChild(setNewExpenseDiv)
-        }
-    }
-
-    const handleCreateNewExpense = () => {
-        setNewExpense(false)
-    }
 
     return (
         <TransactionsContext.Provider value={{
-            transactions, setTransactions
+            transactions: transactionsState, setTransactions: setTransactionsState
         }}>
             <div className="flex flex-col min-h-screen">
                 {/* <FontAwesomeIcon icon={faCcVisa} className="w-[30px]" />
@@ -53,20 +42,13 @@ export default function Home() {
                 <div className="mb-6">
                     <CreditCard></CreditCard>
                 </div>
+                <div>
+                    <BudgetOverview />
+                </div>
                 <div className="">
                     <PageTabs></PageTabs>
                 </div>
 
-                <div>
-                    <BudgetOverview />
-                </div>
-
-
-                <div>
-                    {/* <WeekTransactions></WeekTransactions> */}
-                    {/* <MonthTransactions></MonthTransactions> */}
-                    <YearTransactions></YearTransactions>
-                </div>
                 <div className="">
                     <Footer></Footer>
                 </div>

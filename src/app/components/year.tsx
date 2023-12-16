@@ -22,35 +22,20 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function YearTransactions() {
-    const { transactions, setTransactions } = useTransactions();
+    const { transactions } = useTransactions();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('./user.json');
-                const userData = await response.json();
 
-                const transactionsData = userData.transactions || [];
+    // Sort all transactions by date in descending order
+    const sortedTransactions = transactions.sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
+        const dateA: Date = new Date(a.year, a.month - 1, a.day);
+        const dateB: Date = new Date(b.year, b.month - 1, b.day);
+        return dateB.getTime() - dateA.getTime();
+    });
 
-                // Sort all transactions by date in descending order
-                const sortedTransactions = transactionsData.sort((a: { year: number; month: number; day: number | undefined; }, b: { year: number; month: number; day: number | undefined; }) => {
-                    const dateA: Date = new Date(a.year, a.month - 1, a.day);
-                    const dateB: Date = new Date(b.year, b.month - 1, b.day);
-                    return dateB.getTime() - dateA.getTime();
-                });
-
-                setTransactions(sortedTransactions);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, [setTransactions]);
-
+    if (!sortedTransactions.length) return <span>No transactions found for this year</span>
     return (
         <div className="yearExpenses mt-6 mb-20">
-            {transactions.map((transaction) => (
+            {sortedTransactions.map((transaction) => (
                 <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={transaction.transactionId}>
                     <div className="px-4">
                         <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />

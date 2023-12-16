@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useTransactions } from "./TransactionsContext";
+import Link from "next/link";
+import { link } from "fs";
 
 export function Footer() {
     const { transactions, setTransactions } = useTransactions();
@@ -46,8 +48,10 @@ export function Footer() {
     };
 
     return (
+        // <Link href={'/add-transaction'}>
         <div className="fixed bottom-0 left-0 right-0 flex justify-center mt-6 mb-6">
             <FontAwesomeIcon icon={faPlus} className="text-white bg-black p-4 rounded-full cursor-pointer" onClick={onIconClick} />
         </div>
+        // </Link>
     );
 }
