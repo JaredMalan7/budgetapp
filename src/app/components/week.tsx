@@ -1,9 +1,8 @@
 'use client'
-import React, { useContext, useEffect, useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition } from "@fortawesome/free-solid-svg-icons"
-import { useTransactions } from "./TransactionsContext"
-
+import React, { useContext, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { useTransactions } from "./TransactionsContext";
 
 const transactionTypeIcons: Record<string, IconDefinition> = {
     Transportation: faCar,
@@ -21,42 +20,115 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function WeekTransactions() {
-    const { user } = useTransactions();
+    const { user, setTransactions } = useTransactions();
     const { transactions } = user;
 
-    const currentDate = new Date();
-    const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
-    const endOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + (6 - currentDate.getDay()));
+    const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [editedTransactions, setEditedTransactions] = useState([...transactions]);
 
-    const currentWeekTransactions = transactions
-        .filter((transaction) => {
-            const transactionDate = new Date(transaction.year, transaction.month - 1, transaction.day);
-            return transactionDate >= startOfWeek && transactionDate <= endOfWeek;
-        })
-        .sort((a, b) => {
-            const dateA = new Date(a.year, a.month - 1, a.day);
-            const dateB = new Date(b.year, b.month - 1, b.day);
-            return dateB.getTime() - dateA.getTime();
-        });
+    const handleEdit = (index: number) => {
+        setEditIndex(index);
+        const updatedTransactions = [...transactions];
+        updatedTransactions[index] = { ...transactions[index] };
+        setEditedTransactions(updatedTransactions);
+    };
 
-    if (!currentWeekTransactions.length) return <div className="text-center">No transactions found for this week</div>;
+    const handleSave = () => {
+        setTransactions(editedTransactions);
+        setEditIndex(null);
+    };
+
+    const handleCancel = () => {
+        setEditIndex(null);
+    };
+
+    const handleInputChange = (index: number, key: string, value: string) => {
+        const updatedTransactions = [...editedTransactions];
+        updatedTransactions[index][key] = value;
+        setEditedTransactions(updatedTransactions);
+    };
+
+    // Function to check if a transaction falls within the current week
+    const isTransactionInCurrentWeek = (transaction: any) => {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed
+        const currentDay = currentDate.getDate();
+
+        return (
+            transaction.year === currentYear &&
+            transaction.month === currentMonth &&
+            transaction.day >= currentDay - currentDate.getDay() &&
+            transaction.day <= currentDay + (6 - currentDate.getDay())
+        );
+    };
 
     return (
         <div className="weekExpenses mt-6 mb-20">
-            {currentWeekTransactions.map((transaction, index) => (
-                <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
-                    <div className="px-4">
-                        <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
+            {transactions.map((transaction, index) => (
+                // Check if the transaction is in the current week before rendering
+                isTransactionInCurrentWeek(transaction) && (
+                    <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
+                        <div className="px-4">
+                            <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
+                        </div>
+                        <div className="text-center">
+                            {editIndex === index ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].transactionName}
+                                        onChange={(e) => handleInputChange(index, "transactionName", e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].month.toString()}
+                                        onChange={(e) => handleInputChange(index, "month", e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].day.toString()}
+                                        onChange={(e) => handleInputChange(index, "day", e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].year.toString()}
+                                        onChange={(e) => handleInputChange(index, "year", e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].transactionBalance.toString()}
+                                        onChange={(e) => handleInputChange(index, "transactionBalance", e.target.value)}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editedTransactions[index].transactionType}
+                                        onChange={(e) => handleInputChange(index, "transactionType", e.target.value)}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <p className="font-bold">{transaction.transactionName}</p>
+                                    <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
+                                </>
+                            )}
+                        </div>
+                        <div className="font-bold">
+                            {transaction.transactionBalance < 0 && "-"}
+                            ${Math.abs(transaction.transactionBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </div>
+                        <div>
+                            <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
+                        </div>
+
+                        {editIndex === index && (
+                            <div>
+                                <button onClick={handleSave}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </div>
+                        )}
                     </div>
-                    <div className="text-center">
-                        <p className="font-bold">{transaction.transactionName}</p>
-                        <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
-                    </div>
-                    <div className="font-bold">
-                        {transaction.transactionBalance < 0 && "-"}
-                        ${Math.abs(transaction.transactionBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </div>
-                </div>
+                )
             ))}
         </div>
     );
