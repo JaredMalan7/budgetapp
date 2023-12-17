@@ -8,24 +8,20 @@ import { useTransactions } from "./TransactionsContext";
 
 
 export function PageTabs() {
-    const { setTransactions } = useTransactions();
+    const { transactions, setTransactions } = useTransactions();
 
-    const fetchData = async () => {
+    useEffect(() => {
         try {
-            const response = await fetch('https://65761d560febac18d403b1ad.mockapi.io/api/v1/transactions');
-            const transactionsData = await response.json() || [];
-
+            // Retrieve transactions from local storage
+            const storedTransactions = localStorage.getItem("transactions");
+            const transactionsData = storedTransactions ? JSON.parse(storedTransactions) : [];
 
             // Set the transactions without reversing the order
             setTransactions(transactionsData);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    }, [setTransactions]); // Add setTransactions to dependency array to eliminate warnings
 
     return (
         <div className="flex w-full flex-col mb-6">

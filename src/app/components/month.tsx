@@ -41,8 +41,8 @@ export function MonthTransactions() {
     if (!currentMonthTransactions.length) return <span>No transactions found for this month</span>
     return (
         <div className="monthExpenses mt-6 mb-20">
-            {currentMonthTransactions.map((transaction) => (
-                <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={transaction.transactionId}>
+            {currentMonthTransactions.map((transaction, index) => (
+                <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
                     <div className="px-4">
                         <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
                     </div>
