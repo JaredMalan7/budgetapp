@@ -48,6 +48,15 @@ export function WeekTransactions() {
         setEditedTransactions(updatedTransactions);
     };
 
+    const handleDelete = (index: number) => {
+        const updatedTransactions = [...editedTransactions];
+        updatedTransactions.splice(index, 1);
+        setEditedTransactions(updatedTransactions);
+        setEditIndex(null);
+        setTransactions(updatedTransactions); // Add this line to update the context transactions
+    };
+
+
     // Function to check if a transaction falls within the current week
     const isTransactionInCurrentWeek = (transaction: any) => {
         const currentDate = new Date();
@@ -62,6 +71,8 @@ export function WeekTransactions() {
             transaction.day <= currentDay + (6 - currentDate.getDay())
         );
     };
+
+
 
     return (
         <div className="weekExpenses mt-6 mb-20">
@@ -119,8 +130,10 @@ export function WeekTransactions() {
                         </div>
                         <div>
                             <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
+                            {editIndex === index && (
+                                <button onClick={() => handleDelete(index)}>Delete</button>
+                            )}
                         </div>
-
                         {editIndex === index && (
                             <div>
                                 <button onClick={handleSave}>Save</button>
