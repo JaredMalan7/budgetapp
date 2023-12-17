@@ -72,7 +72,10 @@ export function WeekTransactions() {
         );
     };
 
-
+    const currentWeekTransactions = transactions.filter(isTransactionInCurrentWeek);
+    if (!currentWeekTransactions.length) {
+        return <div className="text-center">No transactions found for this week</div>;
+    }
 
     return (
         <div className="weekExpenses mt-6 mb-20">
