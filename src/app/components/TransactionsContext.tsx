@@ -1,5 +1,4 @@
 'use client'
-
 import React, { createContext, FC, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 
 interface ITransaction {
@@ -12,7 +11,17 @@ interface ITransaction {
     year: number;
 }
 
+// Define IUser interface for the entire user object
+interface IUser {
+    name: string;
+    lastName: string;
+    budget: number;
+    transactions: ITransaction[];
+}
+
 interface TransactionsContextType {
+    user: IUser;
+    setUser: React.Dispatch<React.SetStateAction<IUser>>;
     transactions: ITransaction[];
     setTransactions: React.Dispatch<React.SetStateAction<ITransaction[]>>;
 }
@@ -27,58 +36,79 @@ const useTransactions = () => {
     const transactionsContext = useContext(TransactionsContext);
 
     if (!transactionsContext) {
-        throw new Error(
-            "useTransactions has to be used within <TransactionsContext.Provider>"
-        );
+        throw new Error("useTransactions has to be used within <TransactionsContext.Provider>");
     }
 
     return transactionsContext;
 };
 
 const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
-    const [transactions, setTransactions] = useState<ITransaction[] | null>(null);
+    // Initialize user state
+    const [user, setUser] = useState<IUser>(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
+    });
 
+    // Initialize transactions state
+    const [transactions, setTransactions] = useState<ITransaction[]>(() => {
+        const storedTransactions = localStorage.getItem("transactions");
+        return storedTransactions ? JSON.parse(storedTransactions) : [];
+    });
+
+    // Load user data from local storage on component mount if state is not set
     useEffect(() => {
-        // Load transactions from local storage on component mount if state is not set
-        if (transactions === null) {
-            const storedTransactions = localStorage.getItem("transactions");
-            if (storedTransactions) {
-                setTransactions(JSON.parse(storedTransactions));
-            } else {
-                setTransactions([]); // Set to an empty array if no data is in local storage
-            }
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
         }
+    }, []);
+
+    // Load transactions from local storage on component mount if state is not set
+    useEffect(() => {
+        const storedTransactions = localStorage.getItem("transactions");
+        if (storedTransactions) {
+            setTransactions(JSON.parse(storedTransactions));
+        }
+    }, []);
+
+    // Update local storage whenever user data changes
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(user));
+    }, [user]);
+
+    // Update local storage whenever transactions data changes
+    useEffect(() => {
+        localStorage.setItem("transactions", JSON.stringify(transactions));
     }, [transactions]);
 
-    // Update local storage whenever transactions change
-    useEffect(() => {
-        if (transactions !== null) {
-            localStorage.setItem("transactions", JSON.stringify(transactions));
-        }
-    }, [transactions]);
+    // Provide a memoized version of setUser and setTransactions to avoid unnecessary renders
+    const memoizedSetUser = useCallback(
+        (newUser: React.SetStateAction<IUser>) => {
+            setUser((prevUser) => {
+                const updatedUser = typeof newUser === "function" ? newUser(prevUser) : newUser;
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                return updatedUser;
+            });
+        },
+        []
+    );
 
-    // Provide a memoized version of setTransactions to avoid unnecessary renders
     const memoizedSetTransactions = useCallback(
         (newTransactions: React.SetStateAction<ITransaction[]>) => {
-            setTransactions((prevState) => {
-                if (typeof newTransactions === 'function') {
-                    // Handle functional update
-                    return newTransactions(prevState || []);
-                } else {
-                    // Handle direct value update
-                    return newTransactions || [];
-                }
+            setTransactions((prevTransactions) => {
+                const updatedTransactions =
+                    typeof newTransactions === "function" ? newTransactions(prevTransactions) : newTransactions;
+                localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+                return updatedTransactions;
             });
         },
         []
     );
 
     return (
-        <TransactionsContext.Provider value={{ transactions: transactions || [], setTransactions: memoizedSetTransactions }}>
+        <TransactionsContext.Provider value={{ user, setUser: memoizedSetUser, transactions, setTransactions: memoizedSetTransactions }}>
             {children}
         </TransactionsContext.Provider>
     );
 };
-
-
 export { useTransactions, TransactionsProvider, TransactionsContext };

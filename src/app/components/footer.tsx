@@ -7,7 +7,7 @@ import Link from "next/link";
 import { link } from "fs";
 
 export function Footer() {
-    const { transactions, setTransactions } = useTransactions();
+    const { user, setUser } = useTransactions();
     const [newTransaction, setNewTransaction] = useState({
         transactionId: 0,
         transactionType: "Other",
@@ -20,14 +20,23 @@ export function Footer() {
 
     const handleAddTransaction = () => {
         try {
-            // Create a copy of the transactions array and add the new transaction
-            const updatedTransactions = [...transactions, newTransaction];
+            setUser((prevUser) => {
+                const updatedUser = {
+                    ...prevUser,
+                    transactions: [
+                        ...prevUser.transactions,
+                        {
+                            ...newTransaction,
+                            transactionId: newTransaction.transactionId + 1,
+                        },
+                    ],
+                };
 
-            // Update the context with the new transactions
-            setTransactions(updatedTransactions);
+                // Update local storage with the new user object
+                localStorage.setItem("user", JSON.stringify(updatedUser));
 
-            // Update local storage with the new transactions
-            localStorage.setItem("transactions", JSON.stringify(updatedTransactions));
+                return updatedUser;
+            });
 
             // Update newTransaction state for the next transaction
             setNewTransaction((prevTransaction) => ({
@@ -40,25 +49,10 @@ export function Footer() {
         }
     };
 
-    const onIconClick = () => {
-        handleAddTransaction();
-    };
-
-    // Fetch data from local storage on component mount
-    useEffect(() => {
-        try {
-            const storedTransactions = localStorage.getItem("transactions");
-            if (storedTransactions) {
-                setTransactions(JSON.parse(storedTransactions));
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }, []); // Empty dependency array to ensure it runs only on mount
-
     return (
         <div className="fixed bottom-0 left-0 right-0 flex justify-center mt-6 mb-6">
-            <FontAwesomeIcon icon={faPlus} className="text-white bg-black p-4 rounded-full cursor-pointer" onClick={onIconClick} />
+            <FontAwesomeIcon icon={faPlus} className="text-white bg-black p-4 rounded-full cursor-pointer" onClick={handleAddTransaction} />
         </div>
     );
 }
+

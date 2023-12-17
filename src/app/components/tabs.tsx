@@ -6,9 +6,8 @@ import { Router, useRouter } from "next/router";
 import { useTransactions } from "./TransactionsContext";
 
 
-
 export function PageTabs() {
-    const { transactions, setTransactions } = useTransactions();
+    const { user, setUser } = useTransactions();
 
     useEffect(() => {
         try {
@@ -17,11 +16,14 @@ export function PageTabs() {
             const transactionsData = storedTransactions ? JSON.parse(storedTransactions) : [];
 
             // Set the transactions without reversing the order
-            setTransactions(transactionsData);
+            setUser((prevUser) => ({
+                ...prevUser,
+                transactions: transactionsData,
+            }));
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }, [setTransactions]); // Add setTransactions to dependency array to eliminate warnings
+    }, [setUser]); // Add setUser to the dependency array to eliminate warnings
 
     return (
         <div className="flex w-full flex-col mb-6 mt-6 justify-center">
@@ -29,13 +31,14 @@ export function PageTabs() {
                 <Tab key="Week" title="Week">
                     <WeekTransactions></WeekTransactions>
                 </Tab>
-                <Tab key="Month" title="Month" >
+                <Tab key="Month" title="Month">
                     <MonthTransactions></MonthTransactions>
                 </Tab>
-                <Tab key="Year" title="Year" >
+                <Tab key="Year" title="Year">
                     <YearTransactions></YearTransactions>
                 </Tab>
             </Tabs>
         </div>
     );
 }
+

@@ -22,7 +22,8 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function YearTransactions() {
-    const { transactions } = useTransactions();
+    const { user } = useTransactions();
+    const { transactions } = user;
 
 
     // Sort all transactions by date in descending order

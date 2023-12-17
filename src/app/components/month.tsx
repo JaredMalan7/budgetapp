@@ -22,7 +22,8 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function MonthTransactions() {
-    const { transactions } = useTransactions();
+    const { user } = useTransactions();
+    const { transactions } = user;
 
     // Filter transactions for the current year
     const currentMonthTransactions = transactions

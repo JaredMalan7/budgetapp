@@ -21,7 +21,8 @@ const transactionTypeIcons: Record<string, IconDefinition> = {
 };
 
 export function WeekTransactions() {
-    const { transactions } = useTransactions();
+    const { user } = useTransactions();
+    const { transactions } = user;
 
     const currentDate = new Date();
     const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
