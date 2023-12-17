@@ -24,7 +24,7 @@ export function PageTabs() {
     }, [setTransactions]); // Add setTransactions to dependency array to eliminate warnings
 
     return (
-        <div className="flex w-full flex-col mb-6">
+        <div className="flex w-full flex-col mb-6 mt-6 justify-center">
             <Tabs fullWidth radius="full">
                 <Tab key="Week" title="Week">
                     <WeekTransactions></WeekTransactions>

@@ -1,4 +1,7 @@
 'use client'
+import Link from "next/link"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React from "react"
 import { useEffect, useState } from "react"
 
@@ -39,8 +42,12 @@ export function Greet() {
 
 
     return (
-        <div className="">
+        <div className="flex justify-between place-items-center">
             <span className="font-bold">{greeting}</span>
+            <Link href="/user">
+                <FontAwesomeIcon icon={faUser} className="text-white bg-meteorite p-2 rounded-full cursor-pointer mr-6" />
+
+            </Link>
         </div>
     )
 }

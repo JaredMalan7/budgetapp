@@ -38,7 +38,7 @@ export function MonthTransactions() {
         });
 
 
-    if (!currentMonthTransactions.length) return <span>No transactions found for this month</span>
+    if (!currentMonthTransactions.length) return <div className="text-center">No transactions found for this month</div>;
     return (
         <div className="monthExpenses mt-6 mb-20">
             {currentMonthTransactions.map((transaction, index) => (

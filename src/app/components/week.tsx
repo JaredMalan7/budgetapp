@@ -38,7 +38,7 @@ export function WeekTransactions() {
             return dateB.getTime() - dateA.getTime();
         });
 
-    if (!currentWeekTransactions.length) return <span>No transactions found for this week</span>;
+    if (!currentWeekTransactions.length) return <div className="text-center">No transactions found for this week</div>;
 
     return (
         <div className="weekExpenses mt-6 mb-20">

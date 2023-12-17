@@ -32,7 +32,7 @@ export function YearTransactions() {
         return dateB.getTime() - dateA.getTime();
     });
 
-    if (!sortedTransactions.length) return <span>No transactions found for this year</span>
+    if (!sortedTransactions.length) return <div className="text-center">No transactions found</div>;
     return (
         <div className="yearExpenses mt-6 mb-20">
             {sortedTransactions.map((transaction, index) => (
