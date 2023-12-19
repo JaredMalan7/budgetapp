@@ -44,7 +44,12 @@ export function WeekTransactions() {
 
     const handleInputChange = (index: number, key: string, value: string) => {
         const updatedTransactions = [...editedTransactions];
-        updatedTransactions[index][key] = value;
+        if (key === 'transactionType') {
+            // Use the selected transaction type from the TransactionsMenu
+            updatedTransactions[index][key] = value.label;
+        } else {
+            updatedTransactions[index][key] = value;
+        }
         setEditedTransactions(updatedTransactions);
     };
 
@@ -88,38 +93,11 @@ export function WeekTransactions() {
                         </div>
                         <div className="text-center">
                             {editIndex === index ? (
-                                <>
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].transactionName}
-                                        onChange={(e) => handleInputChange(index, "transactionName", e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].month.toString()}
-                                        onChange={(e) => handleInputChange(index, "month", e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].day.toString()}
-                                        onChange={(e) => handleInputChange(index, "day", e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].year.toString()}
-                                        onChange={(e) => handleInputChange(index, "year", e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].transactionBalance.toString()}
-                                        onChange={(e) => handleInputChange(index, "transactionBalance", e.target.value)}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editedTransactions[index].transactionType}
-                                        onChange={(e) => handleInputChange(index, "transactionType", e.target.value)}
-                                    />
-                                </>
+                                // Replace the input for transactionType with TransactionsMenu
+                                <TransactionsMenu
+                                    selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
+                                    handleItemSelect={(item) => handleInputChange(index, 'transactionType', item)}
+                                />
                             ) : (
                                 <>
                                     <p className="font-bold">{transaction.transactionName}</p>

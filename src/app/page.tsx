@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import { Greet, CreditCard, PageTabs, Footer, BudgetOverview } from "./components";
+import { Greet, CreditCard, PageTabs, Footer, BudgetOverview, TransactionsMenu } from "./components";
 import { TransactionsProvider } from "./components/TransactionsContext";
 import { NextPage } from "next";
 
@@ -22,7 +22,9 @@ const Home: NextPage = () => {
                 <div className="">
                     <PageTabs></PageTabs>
                 </div>
-
+                <div>
+                    <TransactionsMenu></TransactionsMenu>
+                </div>
                 <div className="">
                     <Footer></Footer>
                 </div>
