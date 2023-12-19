@@ -1,7 +1,7 @@
 // 'use client'
 import React, { useContext, useState, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit, faTrash, faFileArrowDown, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit, faTrash, faFileArrowDown, faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTransactions } from "./TransactionsContext";
 import { TransactionsMenu } from "./transactionmenu";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
@@ -191,10 +191,10 @@ export function WeekTransactions() {
                                 <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
                             )}
                             {editIndex === index && (
-                                <div className="buttonsContainer flex flex-col gap-2 ml-3">
-                                    <div className="cursor-pointer" onClick={() => handleDelete(index)}>Delete</div>
-                                    <div className="cursor-pointer" onClick={handleSave}>Save</div>
-                                    <div className="cursor-pointer" onClick={handleCancel}>Cancel</div>
+                                <div className="buttonsContainer flex flex-col gap-5 ml-3">
+                                    <FontAwesomeIcon icon={faTrash} className="cursor-pointer text-lg" onClick={() => handleDelete(index)} />
+                                    <FontAwesomeIcon icon={faFileArrowDown} className="cursor-pointer text-lg" onClick={handleSave} />
+                                    <FontAwesomeIcon icon={faRectangleXmark} className="cursor-pointer text-lg" onClick={handleCancel} />
                                 </div>
                             )}
                         </div>
