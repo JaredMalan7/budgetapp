@@ -45,8 +45,15 @@ const useTransactions = () => {
 const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
     // Initialize user state
     const [user, setUser] = useState<IUser>(() => {
-        const storedUser = typeof window !== 'undefined' ? localStorage.getItem("user") : null;
-        return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
+        // Check if running in the browser environment before accessing localStorage
+        const isBrowser = typeof window !== 'undefined';
+
+        if (isBrowser) {
+            const storedUser = localStorage.getItem("user");
+            return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
+        } else {
+            return { name: "", lastName: "", budget: 0, transactions: [] };
+        }
     });
 
     // Load user data from local storage on component mount if state is not set
@@ -60,14 +67,11 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
                 setUser(JSON.parse(storedUser));
             }
         }
-    }, []);
+    }, []); // Empty dependency array ensures this runs only on mount on the client side
 
     // Update local storage whenever user data changes
     useEffect(() => {
-        // Check if running in the browser environment before accessing localStorage
-        if (typeof window !== 'undefined') {
-            localStorage.setItem("user", JSON.stringify(user));
-        }
+        localStorage.setItem("user", JSON.stringify(user));
     }, [user]);
 
     // Provide a memoized version of setUser to avoid unnecessary renders
