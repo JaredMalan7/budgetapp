@@ -11,7 +11,7 @@ export function Footer() {
     const [newTransaction, setNewTransaction] = useState({
         transactionId: 0,
         transactionType: "Other",
-        transactionName: "New Transaction",
+        transactionName: "Transaction Name",
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1,
         day: new Date().getDate(),

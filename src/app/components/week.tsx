@@ -1,7 +1,7 @@
 // 'use client'
 import React, { useContext, useState, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit, faTrash, faFileArrowDown, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTransactions } from "./TransactionsContext";
 import { TransactionsMenu } from "./transactionmenu";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
@@ -113,56 +113,68 @@ export function WeekTransactions() {
             {transactions.map((transaction, index) => (
                 // Check if the transaction is in the current week before rendering
                 isTransactionInCurrentWeek(transaction) && (
-                    <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
-                        <div className="px-4">
-                            {editIndex === index ? (
-                                <>
-                                    {/* Hide the previously selected transactionType during editing */}
-                                    <TransactionsMenu
-                                        selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
-                                        handleItemSelect={(item) => handleInputChange('transactionType', item)}
-                                    />
-                                </>
-                            ) : (
-                                <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
-                            )}
-                        </div>
-                        <div className="text-center">
-                            {editIndex === index ? (
-                                <>
-                                    {/* Show inputs only during editing */}
-                                    <input
-                                        type="text"
-                                        value={editTransaction?.transactionName || ''}
-                                        onChange={(e) => handleInputChange('transactionName', e.target.value)}
-                                        placeholder="Transaction Name"
-                                    />
-                                    <input
-                                        type="number"
-                                        value={editTransaction?.day || 0}
-                                        onChange={(e) => handleInputChange('day', e.target.value)}
-                                        placeholder="Day"
-                                    />
-                                    <input
-                                        type="number"
-                                        value={editTransaction?.month || 0}
-                                        onChange={(e) => handleInputChange('month', e.target.value)}
-                                        placeholder="Month"
-                                    />
-                                    <input
-                                        type="number"
-                                        value={editTransaction?.year || 0}
-                                        onChange={(e) => handleInputChange('year', e.target.value)}
-                                        placeholder="Year"
-                                    />
-                                </>
-                            ) : (
-                                <>
-                                    {/* Show values when not editing */}
-                                    <p className="font-bold">{transaction.transactionName}</p>
-                                    <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
-                                </>
-                            )}
+                    <div className="flex justify-between w-full place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
+                        <div className="flex just place-items-center gap-4">
+                            <div className="flex w-full">
+                                {editIndex === index ? (
+                                    <>
+                                        {/* Hide the previously selected transactionType during editing */}
+                                        <TransactionsMenu
+                                            selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
+                                            handleItemSelect={(item) => handleInputChange('transactionType', item)}
+                                        />
+                                    </>
+                                ) : (
+                                    <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
+                                )}
+                            </div>
+                            <div className="text-center">
+                                {editIndex === index ? (
+                                    <>
+                                        {/* Show inputs only during editing */}
+                                        <div className="flex flex-col gap-2">
+                                            <input className="bg-app-base py-2 text-center rounded"
+                                                type="text"
+                                                value={editTransaction?.transactionName || ''}
+                                                onChange={(e) => handleInputChange('transactionName', e.target.value)}
+                                                placeholder="Transaction Name"
+                                            />
+                                            <div className="flex gap-2">
+                                                <input className="bg-app-base p-2 text-center rounded"
+                                                    type="number"
+                                                    value={editTransaction?.day || 0}
+                                                    onChange={(e) => handleInputChange('day', e.target.value)}
+                                                    placeholder="Day"
+                                                    min={1}
+                                                    max={31}
+                                                />
+                                                <input className="bg-app-base p-2 text-center rounded"
+                                                    type="number"
+                                                    value={editTransaction?.month || 0}
+                                                    onChange={(e) => handleInputChange('month', e.target.value)}
+                                                    placeholder="Month"
+                                                    min={1}
+                                                    max={12}
+                                                />
+                                                <input className="bg-app-base p-2 text-center rounded"
+                                                    type="number"
+                                                    value={editTransaction?.year || 0}
+                                                    onChange={(e) => handleInputChange('year', e.target.value)}
+                                                    placeholder="Year"
+                                                    min={1000}
+                                                    max={9999}
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-center">
+                                        {/* Show values when not editing */}
+                                        <p className="font-bold">{transaction.transactionName}</p>
+                                        <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="font-bold">
                             {/* Show balance only when not editing */}
@@ -173,17 +185,17 @@ export function WeekTransactions() {
                                 </>
                             )}
                         </div>
-                        <div>
+                        <div className="EditButtonContainer">
                             {/* Show edit button only when not editing */}
                             {editIndex !== index && (
                                 <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
                             )}
                             {editIndex === index && (
-                                <>
-                                    <button onClick={() => handleDelete(index)}>Delete</button>
-                                    <button onClick={handleSave}>Save</button>
-                                    <button onClick={handleCancel}>Cancel</button>
-                                </>
+                                <div className="buttonsContainer flex flex-col gap-2 ml-3">
+                                    <div className="cursor-pointer" onClick={() => handleDelete(index)}>Delete</div>
+                                    <div className="cursor-pointer" onClick={handleSave}>Save</div>
+                                    <div className="cursor-pointer" onClick={handleCancel}>Cancel</div>
+                                </div>
                             )}
                         </div>
                     </div>
