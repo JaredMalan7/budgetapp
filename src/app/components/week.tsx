@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 import React, { useContext, useState, ChangeEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition, faEdit, faTrash, faFileArrowDown, faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
@@ -56,6 +56,9 @@ export function WeekTransactions() {
             if (key === 'transactionType') {
                 // If updating transactionType, use the selected transaction type label
                 updatedTransaction[key] = typeof value === 'string' ? (value as string) : (value as { label: string }).label;
+            } else if (key === 'transactionBalance') {
+                // Ensure that the balance is treated as a number
+                updatedTransaction[key] = parseFloat(value as string);
             } else {
                 // For other properties, directly set the value
                 updatedTransaction[key] = typeof value === 'string' ? value : (value as { label: string }).label;
@@ -114,20 +117,20 @@ export function WeekTransactions() {
                 // Check if the transaction is in the current week before rendering
                 isTransactionInCurrentWeek(transaction) && (
                     <div className="flex justify-between w-full place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
+                        <div className="flex">
+                            {editIndex === index ? (
+                                <>
+                                    {/* Hide the previously selected transactionType during editing */}
+                                    <TransactionsMenu
+                                        selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
+                                        handleItemSelect={(item) => handleInputChange('transactionType', item)}
+                                    />
+                                </>
+                            ) : (
+                                <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
+                            )}
+                        </div>
                         <div className="flex just place-items-center gap-4">
-                            <div className="flex w-full">
-                                {editIndex === index ? (
-                                    <>
-                                        {/* Hide the previously selected transactionType during editing */}
-                                        <TransactionsMenu
-                                            selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
-                                            handleItemSelect={(item) => handleInputChange('transactionType', item)}
-                                        />
-                                    </>
-                                ) : (
-                                    <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
-                                )}
-                            </div>
                             <div className="text-center">
                                 {editIndex === index ? (
                                     <>
@@ -138,6 +141,8 @@ export function WeekTransactions() {
                                                 value={editTransaction?.transactionName || ''}
                                                 onChange={(e) => handleInputChange('transactionName', e.target.value)}
                                                 placeholder="Transaction Name"
+                                                onFocus={(e) => { e.target.select(); e.preventDefault(); }} // Select text on focus and prevent default context menu
+                                                onContextMenu={(e) => e.preventDefault()} // Prevent default context menu
                                             />
                                             <div className="flex gap-2">
                                                 <input className="bg-app-base p-2 text-center rounded"
@@ -165,6 +170,12 @@ export function WeekTransactions() {
                                                     max={9999}
                                                 />
                                             </div>
+                                            <input className="bg-app-base p-2 text-center rounded"
+                                                type="number"
+                                                value={editTransaction?.transactionBalance || 0}
+                                                onChange={(e) => handleInputChange('transactionBalance', e.target.value)}
+                                                placeholder="Balance"
+                                            />
                                         </div>
                                     </>
                                 ) : (
@@ -191,7 +202,7 @@ export function WeekTransactions() {
                                 <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
                             )}
                             {editIndex === index && (
-                                <div className="buttonsContainer flex flex-col gap-5 ml-3">
+                                <div className="buttonsContainer flex flex-col gap-6 ml-3">
                                     <FontAwesomeIcon icon={faTrash} className="cursor-pointer text-lg" onClick={() => handleDelete(index)} />
                                     <FontAwesomeIcon icon={faFileArrowDown} className="cursor-pointer text-lg" onClick={handleSave} />
                                     <FontAwesomeIcon icon={faRectangleXmark} className="cursor-pointer text-lg" onClick={handleCancel} />
