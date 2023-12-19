@@ -124,6 +124,7 @@ export function WeekTransactions() {
                                         selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
                                         handleItemSelect={(item) => handleInputChange('transactionType', item)}
                                     />
+                                    {/* Show inputs only during editing */}
                                     <input
                                         type="text"
                                         value={editTransaction?.transactionName || ''}
@@ -148,36 +149,37 @@ export function WeekTransactions() {
                                         onChange={(e) => handleInputChange('year', e.target.value)}
                                         placeholder="Year"
                                     />
-                                    <input
-                                        type="number"
-                                        value={editTransaction?.transactionBalance || 0}
-                                        onChange={(e) => handleInputChange('transactionBalance', e.target.value)}
-                                        placeholder="Transaction Balance"
-                                    />
                                 </>
                             ) : (
                                 <>
+                                    {/* Show values when not editing */}
                                     <p className="font-bold">{transaction.transactionName}</p>
                                     <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
                                 </>
                             )}
                         </div>
                         <div className="font-bold">
-                            {transaction.transactionBalance < 0 && "-"}
-                            ${Math.abs(transaction.transactionBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </div>
-                        <div>
-                            <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
-                            {editIndex === index && (
-                                <button onClick={() => handleDelete(index)}>Delete</button>
+                            {/* Show balance only when not editing */}
+                            {editIndex !== index && (
+                                <>
+                                    {transaction.transactionBalance < 0 && "-"}
+                                    ${Math.abs(transaction.transactionBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </>
                             )}
                         </div>
-                        {editIndex === index && (
-                            <div>
-                                <button onClick={handleSave}>Save</button>
-                                <button onClick={handleCancel}>Cancel</button>
-                            </div>
-                        )}
+                        <div>
+                            {/* Show edit button only when not editing */}
+                            {editIndex !== index && (
+                                <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(index)} className="cursor-pointer" />
+                            )}
+                            {editIndex === index && (
+                                <>
+                                    <button onClick={() => handleDelete(index)}>Delete</button>
+                                    <button onClick={handleSave}>Save</button>
+                                    <button onClick={handleCancel}>Cancel</button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 )
             ))}
