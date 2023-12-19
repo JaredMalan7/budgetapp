@@ -115,15 +115,21 @@ export function WeekTransactions() {
                 isTransactionInCurrentWeek(transaction) && (
                     <div className="flex justify-between place-items-center mb-6 bg-white p-4 rounded-2xl" key={index}>
                         <div className="px-4">
-                            <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
-                        </div>
-                        <div className="text-center">
                             {editIndex === index ? (
                                 <>
+                                    {/* Hide the previously selected transactionType during editing */}
                                     <TransactionsMenu
                                         selectedItem={{ key: transaction.transactionType, label: transaction.transactionType, icon: transactionTypeIcons[transaction.transactionType] }}
                                         handleItemSelect={(item) => handleInputChange('transactionType', item)}
                                     />
+                                </>
+                            ) : (
+                                <FontAwesomeIcon icon={transactionTypeIcons[transaction.transactionType]} />
+                            )}
+                        </div>
+                        <div className="text-center">
+                            {editIndex === index ? (
+                                <>
                                     {/* Show inputs only during editing */}
                                     <input
                                         type="text"
