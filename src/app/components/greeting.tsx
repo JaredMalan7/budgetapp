@@ -10,16 +10,19 @@ export function Greet() {
     const [greeting, setGreeting] = useState("");
 
     useEffect(() => {
-        const currentHour = new Date().getHours();
+        if (typeof window !== "undefined") {
+            // Check if running on the client side
+            const currentHour = new Date().getHours();
 
-        if (currentHour >= 5 && currentHour < 12) {
-            setGreeting(`Good Morning, ${user.name}`);
-        } else if (currentHour >= 12 && currentHour < 18) {
-            setGreeting(`Good Afternoon, ${user.name}`);
-        } else if (currentHour >= 18 && currentHour < 20) {
-            setGreeting(`Good Evening, ${user.name}`);
-        } else {
-            setGreeting(`Hello, ${user.name}`);
+            if (currentHour >= 5 && currentHour < 12) {
+                setGreeting(`Good Morning, ${user.name}`);
+            } else if (currentHour >= 12 && currentHour < 18) {
+                setGreeting(`Good Afternoon, ${user.name}`);
+            } else if (currentHour >= 18 && currentHour < 20) {
+                setGreeting(`Good Evening, ${user.name}`);
+            } else {
+                setGreeting(`Hello, ${user.name}`);
+            }
         }
     }, [user]);
 

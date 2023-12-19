@@ -45,13 +45,15 @@ const useTransactions = () => {
 const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
     // Initialize user state
     const [user, setUser] = useState<IUser>(() => {
-        const storedUser = localStorage.getItem("user");
+        // Check if localStorage is defined before using it
+        const storedUser = typeof window !== 'undefined' ? localStorage.getItem("user") : null;
         return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
     });
 
     // Load user data from local storage on component mount if state is not set
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        // Check if localStorage is defined before using it
+        const storedUser = typeof window !== 'undefined' ? localStorage.getItem("user") : null;
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
@@ -59,7 +61,10 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
     // Update local storage whenever user data changes
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(user));
+        // Check if localStorage is defined before using it
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
     }, [user]);
 
     // Provide a memoized version of setUser to avoid unnecessary renders
