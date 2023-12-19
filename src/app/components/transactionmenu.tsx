@@ -1,12 +1,20 @@
 'use client'
 
-import React, { useEffect, useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition } from "@fortawesome/free-solid-svg-icons"
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react"
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse, faCar, faHouseCrack, faHouseUser, faBasketShopping, faUtensils, faBurger, faFileMedical, faCirclePlay, faTags, faDumbbell, faCreditCard, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
+interface TransactionsMenuProps {
+    selectedItem: {
+        key: string;
+        label: string;
+        icon: IconDefinition;
+    };
+    handleItemSelect: (item: any) => void;
+}
 
-export function TransactionsMenu() {
+export const TransactionsMenu: React.FC<TransactionsMenuProps> = ({ selectedItem, handleItemSelect }) => {
     const icons: { [key: string]: IconDefinition } = {
         Transportation: faCar,
         Utilities: faHouseCrack,
@@ -20,25 +28,26 @@ export function TransactionsMenu() {
         Retail: faTags,
         Sports: faDumbbell,
         Other: faCreditCard,
-    }
+    };
 
     const items = Object.keys(icons).map((key) => ({
         key,
         label: key,
         icon: icons[key],
-    }))
+    }));
 
-    const [selectedItem, setSelectedItem] = useState(items[0])
+    const [internalSelectedItem, setInternalSelectedItem] = useState(items[0]);
 
-    const handleItemSelect = (item: any) => {
-        setSelectedItem(item)
-    }
+    const handleInternalItemSelect = (item: any) => {
+        setInternalSelectedItem(item);
+        handleItemSelect(item); // Pass the selected item to the parent component
+    };
 
     return (
         <Dropdown>
             <DropdownTrigger>
                 <Button variant="flat" style={{ padding: 0, textAlign: 'center' }}>
-                    <FontAwesomeIcon icon={selectedItem.icon} style={{ marginRight: '8px' }} />
+                    <FontAwesomeIcon icon={internalSelectedItem.icon} style={{ marginRight: '8px' }} />
                 </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Dynamic Actions" items={items}>
@@ -48,15 +57,13 @@ export function TransactionsMenu() {
                         color={item.key === "delete" ? "danger" : "default"}
                         className={item.key === "delete" ? "text-danger" : ""}
                         textValue={item.label}  // textValue prop to solve warnings
-                        onClick={() => handleItemSelect(item)} // Handle item selection
+                        onClick={() => handleInternalItemSelect(item)} // Handle item selection
                     >
                         <FontAwesomeIcon icon={item.icon} style={{ marginRight: '8px' }} />
-
                         {item.label}
                     </DropdownItem>
                 )}
             </DropdownMenu>
         </Dropdown>
-    )
-
-}
+    );
+};
