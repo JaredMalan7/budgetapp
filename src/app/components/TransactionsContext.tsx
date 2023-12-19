@@ -52,7 +52,9 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
     // Load user data from local storage on component mount if state is not set
     useEffect(() => {
         // Check if running in the browser environment before accessing localStorage
-        if (typeof window !== 'undefined') {
+        const isBrowser = typeof window !== 'undefined';
+
+        if (isBrowser) {
             const storedUser = localStorage.getItem("user");
             if (storedUser) {
                 setUser(JSON.parse(storedUser));
