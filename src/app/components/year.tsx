@@ -90,6 +90,10 @@ export function YearTransactions() {
         setTransactions(updatedTransactions);
     };
 
+    if (!transactions.length) {
+        return <div className="text-center">No transactions found</div>;
+    }
+
     return (
         <div className="yearExpenses mt-6 mb-20">
             {transactions.map((transaction, index) => (
