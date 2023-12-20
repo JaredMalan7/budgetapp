@@ -112,12 +112,14 @@ export function CreditCard() {
                 0
             );
 
-            const percentage = (totalBalance / budget) * 100;
+            // Ensure percentage is at most 100
+            const percentage = Math.min((totalBalance / budget) * 100, 100);
 
             dispatch({ type: "SET_BALANCE", payload: `$${totalBalance.toFixed(2)}` });
             dispatch({ type: "SET_PROGRESS_WIDTH", payload: `${percentage.toFixed(2)}%` });
         }
     }, [user]);
+
 
     const getCardIcon = (): IconDefinition | null => {
         switch (cardType) {
