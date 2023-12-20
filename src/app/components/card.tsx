@@ -77,38 +77,17 @@ const reducer = (state: State, action: Action): State => {
 
 export function CreditCard() {
     const { user } = useTransactions();
-    const [{ balance, cardNumber, cardType, progressColor, budget, transactions }, dispatch] = useReducer(reducer, {
+    const [
+        { balance, cardNumber, cardType, progressColor, budget, transactions },
+        dispatch
+    ] = useReducer(reducer, {
         balance: "$0",
         cardNumber: "****",
         cardType: "",
-        progressColor: "",
+        progressColor: "#0073ff",
         budget: 0,
         transactions: [],
     });
-
-    useEffect(() => {
-        if (user) {
-            const { card, transactions, budget } = user;
-
-            // Check if 'card' property exists before accessing its properties
-            const cardNumber = card && card["card#"] ? card["card#"] : "****";
-            const cardType = card && card.type ? card.type : "";
-            const progressColor = card && card.progressBarColor ? card.progressBarColor : "";
-
-            dispatch({ type: "SET_CARD_NUMBER", payload: cardNumber });
-            dispatch({ type: "SET_CARD_TYPE", payload: cardType });
-            dispatch({ type: "SET_PROGRESS_COLOR", payload: progressColor });
-            dispatch({ type: "SET_BUDGET", payload: budget });
-            dispatch({ type: "SET_TRANSACTIONS", payload: transactions });
-
-            const totalBalance = transactions.reduce(
-                (total, transaction) => total + transaction.transactionBalance,
-                0
-            );
-            dispatch({ type: "SET_BALANCE", payload: `$${totalBalance.toFixed(2)}` });
-        }
-    }, [user]);
-
 
     // Function to dynamically get the icon based on card type
     const getCardIcon = (): IconDefinition | null => {
@@ -126,6 +105,36 @@ export function CreditCard() {
         }
     };
 
+    useEffect(() => {
+        if (user) {
+            const { card, transactions, budget } = user;
+
+            console.log('User Budget:', budget);  // Added console log
+
+            // Check if 'card' property exists before accessing its properties
+            const cardNumber = card && card["card#"] ? card["card#"] : "****";
+            const cardType = card && card.type ? card.type : "";
+            const progressColor = card && card.progressBarColor ? card.progressBarColor : "";
+
+            dispatch({ type: "SET_CARD_NUMBER", payload: cardNumber });
+            dispatch({ type: "SET_CARD_TYPE", payload: cardType });
+            dispatch({ type: "SET_PROGRESS_COLOR", payload: progressColor });
+            dispatch({ type: "SET_BUDGET", payload: budget });
+            dispatch({ type: "SET_TRANSACTIONS", payload: transactions });
+
+            const totalBalance = transactions.reduce(
+                (total, transaction) => total + transaction.transactionBalance,
+                0
+            );
+
+            // Calculate the percentage of the balance against the budget
+            const percentage = (totalBalance / budget) * 100;
+
+            // Update the progress bar width dynamically
+            dispatch({ type: "SET_BALANCE", payload: `$${totalBalance.toFixed(2)}` });
+        }
+    }, [user]);
+
     return (
         <div className="bg-meteorite p-4 rounded-xl w-card-w h-card-h flex flex-col justify-between">
             <div>
@@ -135,11 +144,11 @@ export function CreditCard() {
                 <div className="text-midDark-text">Balance</div>
             </div>
 
-            <div className="bg-midDark rounded-lg">
+            <div className="budgetBar bg-midDark rounded-lg">
                 <div
                     id="Progress"
-                    style={{ backgroundColor: progressColor }}
-                    className="p-1 w-1/4 rounded-lg"
+                    style={{ backgroundColor: progressColor, width: balance }}
+                    className="p-1 rounded-lg"
                 ></div>
             </div>
             <div className="flex justify-between place-items-center text-white">
