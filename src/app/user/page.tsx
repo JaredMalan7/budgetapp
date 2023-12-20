@@ -2,29 +2,19 @@
 import React, { useState, useEffect } from "react";
 
 const User = () => {
-    // Initial state from local storage or default values
-    const [user, setUser] = useState(() => {
-        // Check if running in the browser environment before accessing localStorage
-        const isBrowser = typeof window !== 'undefined';
-
-        if (isBrowser) {
-            const storedUser = localStorage.getItem("user");
-            return storedUser ? JSON.parse(storedUser) : {
-                name: "userName",
-                lastName: "userLastName",
-                budget: 0,
-                transactions: [],
-            };
-        }
-
-        // Default values for server-side rendering
-        return {
+    // Function to get the initial user state
+    const getInitialUserState = () => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : {
             name: "userName",
             lastName: "userLastName",
             budget: 0,
             transactions: [],
         };
-    });
+    };
+
+    // Initial state from local storage or default values
+    const [user, setUser] = useState(getInitialUserState);
 
     const [userInput, setUserInput] = useState({
         userName: user.name,
@@ -36,7 +26,6 @@ const User = () => {
 
     // Save user data to local storage when user changes
     useEffect(() => {
-        // Check if running in the browser environment before accessing localStorage
         const isBrowser = typeof window !== 'undefined';
 
         if (isBrowser) {
@@ -127,4 +116,3 @@ const User = () => {
 };
 
 export default User;
-
