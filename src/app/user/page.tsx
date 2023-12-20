@@ -1,13 +1,9 @@
 'use client'
 import React, { useState, useEffect } from "react";
+import { faCircleArrowLeft, faUserPen, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const User = () => {
-    let isBrowser;
-
-    if (typeof window !== 'undefined') {
-        isBrowser = true;
-    }
-
     // Function to get the initial user state
     const getInitialUserState = () => {
         // Check if running on the client side
@@ -30,17 +26,15 @@ const User = () => {
         }
     };
 
-
     // Initial state from local storage or default values
     const [user, setUser] = useState(getInitialUserState);
 
     useEffect(() => {
         // Check if running on the client side
-        if (isBrowser && typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
             localStorage.setItem("user", JSON.stringify(user));
         }
-    }, [user, isBrowser]);
-
+    }, [user]);
 
     const [userInput, setUserInput] = useState({
         userName: user.name,
@@ -52,8 +46,7 @@ const User = () => {
 
     // Save user data to local storage when user changes
     useEffect(() => {
-        const storedUser = isBrowser ? localStorage.getItem("user") : null;
-        if (isBrowser) {
+        if (typeof window !== 'undefined') {
             localStorage.setItem("user", JSON.stringify(user));
         }
     }, [user]);
@@ -88,14 +81,19 @@ const User = () => {
         }
     };
 
+    // Handle go back button click
+    const handleGoBackClick = () => {
+        window.history.back();
+    };
+
     return (
-        <div>
+        <div className="bg-white p-5 rounded-xl w-card-w">
             <h1 className="font-bold text-center p-4">User Interface</h1>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 w-full justify-around">
                 <label className="font-bold mr-4">Name:</label>
                 <div>
                     {editMode ? (
-                        <input
+                        <input className="bg-app-base px-2 rounded"
                             placeholder="Enter name"
                             value={userInput.userName}
                             onChange={(e) => setUserInput({ ...userInput, userName: e.target.value })}
@@ -105,11 +103,11 @@ const User = () => {
                     )}
                 </div>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 w-full justify-around">
                 <label className="font-bold mr-4">Last Name:</label>
                 <div>
                     {editMode ? (
-                        <input
+                        <input className="bg-app-base px-2 rounded"
                             placeholder="Enter last name"
                             value={userInput.userLastName}
                             onChange={(e) => setUserInput({ ...userInput, userLastName: e.target.value })}
@@ -119,11 +117,11 @@ const User = () => {
                     )}
                 </div>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 w-full justify-around">
                 <label className="font-bold mr-4">Budget:</label>
                 <div>
                     {editMode ? (
-                        <input
+                        <input className="bg-app-base px-2 rounded"
                             placeholder="Enter budget"
                             value={userInput.budget}
                             onChange={(e) => setUserInput({ ...userInput, budget: e.target.value })}
@@ -133,9 +131,14 @@ const User = () => {
                     )}
                 </div>
             </div>
-            <button onClick={editMode ? handleSaveClick : handleEditClick}>
-                {editMode ? "Save" : "Edit"}
-            </button>
+            <div className="flex items-center mb-4 justify-around">
+                <button onClick={handleGoBackClick} className="mr-2 text-2xl">
+                    <FontAwesomeIcon icon={faCircleArrowLeft} />
+                </button>
+                <button className="text-2xl" onClick={editMode ? handleSaveClick : handleEditClick}>
+                    {editMode ? <FontAwesomeIcon icon={faDownload} /> : <FontAwesomeIcon className="text-2xl" icon={faUserPen} />}
+                </button>
+            </div>
         </div>
     );
 };
