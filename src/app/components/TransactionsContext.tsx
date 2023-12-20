@@ -76,9 +76,13 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
     // Update local storage whenever user data changes
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(user));
-    }, [user]);
+        // Check if running in the browser environment before accessing localStorage
+        const isBrowser = typeof window !== 'undefined';
 
+        if (isBrowser) {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+    }, [user]);
     // Provide a memoized version of setUser to avoid unnecessary renders
     const memoizedSetUser = useCallback(
         (newUser: React.SetStateAction<IUser>) => {
