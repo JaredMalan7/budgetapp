@@ -55,9 +55,9 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
         if (isBrowser) {
             const storedUser = localStorage.getItem("user");
-            return storedUser ? JSON.parse(storedUser) : { user_id: 0, name: "", budget: 0, card: { "card#": "", type: "", progressBarColor: "" }, transactions: [] };
+            return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
         } else {
-            return { user_id: 0, name: "", budget: 0, card: { "card#": "", type: "", progressBarColor: "" }, transactions: [] };
+            return { name: "", lastName: "", budget: 0, transactions: [] };
         }
     });
 
@@ -76,20 +76,14 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
     // Update local storage whenever user data changes
     useEffect(() => {
-        // Check if running in the browser environment before accessing localStorage
-        const isBrowser = typeof window !== 'undefined';
-
-        if (isBrowser) {
-            localStorage.setItem("user", JSON.stringify(user));
-        }
+        localStorage.setItem("user", JSON.stringify(user));
     }, [user]);
 
     // Provide a memoized version of setUser to avoid unnecessary renders
     const memoizedSetUser = useCallback(
         (newUser: React.SetStateAction<IUser>) => {
-            setUser(prevUser => {
+            setUser((prevUser) => {
                 const updatedUser = typeof newUser === "function" ? newUser(prevUser) : newUser;
-                localStorage.setItem("user", JSON.stringify(updatedUser));
                 return updatedUser;
             });
         },
@@ -98,15 +92,10 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
     const memoizedSetTransactions = useCallback(
         (newTransactions: React.SetStateAction<ITransaction[]>) => {
-            setUser((prevUser) => {
-                const updatedUser =
-                    typeof newTransactions === "function"
-                        ? { ...prevUser, transactions: newTransactions(prevUser.transactions) }
-                        : { ...prevUser, transactions: newTransactions };
-
-                localStorage.setItem("user", JSON.stringify(updatedUser));
-                return updatedUser;
-            });
+            setUser((prevUser) => ({
+                ...prevUser,
+                transactions: typeof newTransactions === "function" ? newTransactions(prevUser.transactions) : newTransactions,
+            }));
         },
         []
     );
@@ -117,5 +106,4 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
         </TransactionsContext.Provider>
     );
 };
-
 export { useTransactions, TransactionsProvider, TransactionsContext };
