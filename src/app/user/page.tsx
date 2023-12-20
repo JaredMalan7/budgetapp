@@ -2,19 +2,45 @@
 import React, { useState, useEffect } from "react";
 
 const User = () => {
+    let isBrowser;
+
+    if (typeof window !== 'undefined') {
+        isBrowser = true;
+    }
+
     // Function to get the initial user state
     const getInitialUserState = () => {
-        const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : {
-            name: "userName",
-            lastName: "userLastName",
-            budget: 0,
-            transactions: [],
-        };
+        // Check if running on the client side
+        if (typeof window !== 'undefined') {
+            const storedUser = localStorage.getItem("user");
+            return storedUser ? JSON.parse(storedUser) : {
+                name: "userName",
+                lastName: "userLastName",
+                budget: 0,
+                transactions: [],
+            };
+        } else {
+            // Return default values for server-side rendering
+            return {
+                name: "userName",
+                lastName: "userLastName",
+                budget: 0,
+                transactions: [],
+            };
+        }
     };
+
 
     // Initial state from local storage or default values
     const [user, setUser] = useState(getInitialUserState);
+
+    useEffect(() => {
+        // Check if running on the client side
+        if (isBrowser && typeof window !== 'undefined') {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+    }, [user, isBrowser]);
+
 
     const [userInput, setUserInput] = useState({
         userName: user.name,
@@ -26,8 +52,7 @@ const User = () => {
 
     // Save user data to local storage when user changes
     useEffect(() => {
-        const isBrowser = typeof window !== 'undefined';
-
+        const storedUser = isBrowser ? localStorage.getItem("user") : null;
         if (isBrowser) {
             localStorage.setItem("user", JSON.stringify(user));
         }

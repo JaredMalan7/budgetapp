@@ -55,9 +55,9 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
         if (isBrowser) {
             const storedUser = localStorage.getItem("user");
-            return storedUser ? JSON.parse(storedUser) : { name: "", lastName: "", budget: 0, transactions: [] };
+            return storedUser ? JSON.parse(storedUser) : { user_id: 0, name: "", budget: 0, card: { "card#": "", type: "", progressBarColor: "" }, transactions: [] };
         } else {
-            return { name: "", lastName: "", budget: 0, transactions: [] };
+            return { user_id: 0, name: "", budget: 0, card: { "card#": "", type: "", progressBarColor: "" }, transactions: [] };
         }
     });
 
