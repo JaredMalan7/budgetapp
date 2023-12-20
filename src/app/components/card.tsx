@@ -20,7 +20,6 @@ interface ITransaction {
     month: number;
     year: number;
     transactionBalance: number;
-
 }
 
 // Define the IUser type
@@ -44,6 +43,7 @@ interface State {
     progressColor: string;
     budget: number;
     transactions: ITransaction[];
+    progressWidth: string;
 }
 
 // Define the Action type
@@ -53,7 +53,8 @@ type Action =
     | { type: "SET_CARD_TYPE"; payload: string }
     | { type: "SET_PROGRESS_COLOR"; payload: string }
     | { type: "SET_BUDGET"; payload: number }
-    | { type: "SET_TRANSACTIONS"; payload: ITransaction[] };
+    | { type: "SET_TRANSACTIONS"; payload: ITransaction[] }
+    | { type: "SET_PROGRESS_WIDTH"; payload: string };
 
 // Define the reducer function
 const reducer = (state: State, action: Action): State => {
@@ -70,6 +71,8 @@ const reducer = (state: State, action: Action): State => {
             return { ...state, budget: action.payload };
         case "SET_TRANSACTIONS":
             return { ...state, transactions: action.payload };
+        case "SET_PROGRESS_WIDTH":
+            return { ...state, progressWidth: action.payload };
         default:
             return state;
     }
@@ -78,8 +81,8 @@ const reducer = (state: State, action: Action): State => {
 export function CreditCard() {
     const { user } = useTransactions();
     const [
-        { balance, cardNumber, cardType, progressColor, budget, transactions },
-        dispatch
+        { balance, cardNumber, cardType, progressColor, budget, transactions, progressWidth },
+        dispatch,
     ] = useReducer(reducer, {
         balance: "$0",
         cardNumber: "****",
@@ -87,31 +90,13 @@ export function CreditCard() {
         progressColor: "#0073ff",
         budget: 0,
         transactions: [],
+        progressWidth: "0%", // Added this line
     });
-
-    // Function to dynamically get the icon based on card type
-    const getCardIcon = (): IconDefinition | null => {
-        switch (cardType) {
-            case "faCcVisa":
-                return faCcVisa;
-            case "faCcAmex":
-                return faCcAmex;
-            case "faCcDiscover":
-                return faCcDiscover;
-            case "faCcMastercard":
-                return faCcMastercard;
-            default:
-                return null; // Return a default icon or handle as needed
-        }
-    };
 
     useEffect(() => {
         if (user) {
             const { card, transactions, budget } = user;
 
-            console.log('User Budget:', budget);  // Added console log
-
-            // Check if 'card' property exists before accessing its properties
             const cardNumber = card && card["card#"] ? card["card#"] : "****";
             const cardType = card && card.type ? card.type : "";
             const progressColor = card && card.progressBarColor ? card.progressBarColor : "";
@@ -127,13 +112,27 @@ export function CreditCard() {
                 0
             );
 
-            // Calculate the percentage of the balance against the budget
             const percentage = (totalBalance / budget) * 100;
 
-            // Update the progress bar width dynamically
             dispatch({ type: "SET_BALANCE", payload: `$${totalBalance.toFixed(2)}` });
+            dispatch({ type: "SET_PROGRESS_WIDTH", payload: `${percentage.toFixed(2)}%` });
         }
     }, [user]);
+
+    const getCardIcon = (): IconDefinition | null => {
+        switch (cardType) {
+            case "faCcVisa":
+                return faCcVisa;
+            case "faCcAmex":
+                return faCcAmex;
+            case "faCcDiscover":
+                return faCcDiscover;
+            case "faCcMastercard":
+                return faCcMastercard;
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="bg-meteorite p-4 rounded-xl w-card-w h-card-h flex flex-col justify-between">
@@ -147,7 +146,7 @@ export function CreditCard() {
             <div className="budgetBar bg-midDark rounded-lg">
                 <div
                     id="Progress"
-                    style={{ backgroundColor: progressColor, width: balance }}
+                    style={{ backgroundColor: '#ee341b', width: progressWidth }}
                     className="p-1 rounded-lg"
                 ></div>
             </div>
