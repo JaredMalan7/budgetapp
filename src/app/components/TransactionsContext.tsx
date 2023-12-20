@@ -83,6 +83,7 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
             localStorage.setItem("user", JSON.stringify(user));
         }
     }, [user]);
+
     // Provide a memoized version of setUser to avoid unnecessary renders
     const memoizedSetUser = useCallback(
         (newUser: React.SetStateAction<IUser>) => {
@@ -97,10 +98,14 @@ const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
 
     const memoizedSetTransactions = useCallback(
         (newTransactions: React.SetStateAction<ITransaction[]>) => {
-            setUser((prevUser) => ({
-                ...prevUser,
-                transactions: typeof newTransactions === "function" ? newTransactions(prevUser.transactions) : newTransactions,
-            }));
+            setUser((prevUser) => {
+                const updatedUser = {
+                    ...prevUser,
+                    transactions: typeof newTransactions === "function" ? newTransactions(prevUser.transactions) : newTransactions,
+                };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                return updatedUser;
+            });
         },
         []
     );
