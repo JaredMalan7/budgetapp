@@ -1,82 +1,159 @@
 'use client'
-import React from "react"
-import { useEffect, useState } from "react"
-import { faCcVisa, faCcAmex, faCcDiscover, faCcMastercard, IconDefinition } from "@fortawesome/free-brands-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Button } from '@nextui-org/button'
 
+import React, { useEffect, useReducer } from "react";
+import {
+    faCcVisa,
+    faCcAmex,
+    faCcDiscover,
+    faCcMastercard,
+    IconDefinition,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTransactions } from "./TransactionsContext";
+
+// Define the ITransaction type
+interface ITransaction {
+    transactionId: number;
+    transactionType: string;
+    transactionName: string;
+    day: number;
+    month: number;
+    year: number;
+    transactionBalance: number;
+
+}
+
+// Define the IUser type
+interface IUser {
+    user_id: number;
+    username: string;
+    budget: number;
+    card: {
+        "card#": string;
+        type: string;
+        progressBarColor: string;
+    };
+    transactions: ITransaction[];
+}
+
+// Define the State type
+interface State {
+    balance: string;
+    cardNumber: string;
+    cardType: string;
+    progressColor: string;
+    budget: number;
+    transactions: ITransaction[];
+}
+
+// Define the Action type
+type Action =
+    | { type: "SET_BALANCE"; payload: string }
+    | { type: "SET_CARD_NUMBER"; payload: string }
+    | { type: "SET_CARD_TYPE"; payload: string }
+    | { type: "SET_PROGRESS_COLOR"; payload: string }
+    | { type: "SET_BUDGET"; payload: number }
+    | { type: "SET_TRANSACTIONS"; payload: ITransaction[] };
+
+// Define the reducer function
+const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+        case "SET_BALANCE":
+            return { ...state, balance: action.payload };
+        case "SET_CARD_NUMBER":
+            return { ...state, cardNumber: action.payload };
+        case "SET_CARD_TYPE":
+            return { ...state, cardType: action.payload };
+        case "SET_PROGRESS_COLOR":
+            return { ...state, progressColor: action.payload };
+        case "SET_BUDGET":
+            return { ...state, budget: action.payload };
+        case "SET_TRANSACTIONS":
+            return { ...state, transactions: action.payload };
+        default:
+            return state;
+    }
+};
 
 export function CreditCard() {
-    const [balance, setBalance] = useState('$0')
-    const [cardNumber, setCardNumber] = useState('****')
-    const [cardType, setCardType] = useState("")
-    const [progressColor, setProgressColor] = useState("")
-    const [budget, setBudget] = useState(0)
-    const [transactions, setTransactions] = useState([])
+    const { user } = useTransactions();
+    const [{ balance, cardNumber, cardType, progressColor, budget, transactions }, dispatch] = useReducer(reducer, {
+        balance: "$0",
+        cardNumber: "****",
+        cardType: "",
+        progressColor: "",
+        budget: 0,
+        transactions: [],
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/user.json')
-                const userData = await response.json()
-                const { card, budget, transactions } = userData
+        if (user) {
+            const { card, transactions, budget } = user;
 
+            // Check if 'card' property exists before accessing its properties
+            const cardNumber = card && card["card#"] ? card["card#"] : "****";
+            const cardType = card && card.type ? card.type : "";
+            const progressColor = card && card.progressBarColor ? card.progressBarColor : "";
 
-                setCardNumber(card["card#"])
-                setCardType(card.type)
-                setProgressColor(card.progressBarColor)
-                setBudget(budget)
-                setTransactions(transactions)
+            dispatch({ type: "SET_CARD_NUMBER", payload: cardNumber });
+            dispatch({ type: "SET_CARD_TYPE", payload: cardType });
+            dispatch({ type: "SET_PROGRESS_COLOR", payload: progressColor });
+            dispatch({ type: "SET_BUDGET", payload: budget });
+            dispatch({ type: "SET_TRANSACTIONS", payload: transactions });
 
-                setBalance(`$${budget.toFixed(2)}`)
-            } catch (error) {
-                console.error('Error fetching Data: ', error)
-            }
+            const totalBalance = transactions.reduce(
+                (total, transaction) => total + transaction.transactionBalance,
+                0
+            );
+            dispatch({ type: "SET_BALANCE", payload: `$${totalBalance.toFixed(2)}` });
         }
-        fetchData()
-    }, [])
+    }, [user]);
 
 
     // Function to dynamically get the icon based on card type
-    const getCardIcon = () => {
+    const getCardIcon = (): IconDefinition | null => {
         switch (cardType) {
             case "faCcVisa":
-                return faCcVisa
+                return faCcVisa;
             case "faCcAmex":
-                return faCcAmex
+                return faCcAmex;
             case "faCcDiscover":
-                return faCcDiscover
+                return faCcDiscover;
             case "faCcMastercard":
-                return faCcMastercard
+                return faCcMastercard;
             default:
-                return null // Return a default icon or handle as needed
+                return null; // Return a default icon or handle as needed
         }
-    }
-
-
+    };
 
     return (
         <div className="bg-meteorite p-4 rounded-xl w-card-w h-card-h flex flex-col justify-between">
             <div>
-                <div id="Balance" className="text-title1 text-white">{balance}</div>
+                <div id="Balance" className="text-title1 text-white">
+                    {balance}
+                </div>
                 <div className="text-midDark-text">Balance</div>
             </div>
 
             <div className="bg-midDark rounded-lg">
-                <div id="Progress" style={{ backgroundColor: progressColor }} className="p-1 w-1/4 rounded-lg"></div>
+                <div
+                    id="Progress"
+                    style={{ backgroundColor: progressColor }}
+                    className="p-1 w-1/4 rounded-lg"
+                ></div>
             </div>
             <div className="flex justify-between place-items-center text-white">
                 <div className="flex gap-8">
                     <div>****</div>
                     <div>****</div>
                     <div id="cardNumber">{cardNumber}</div>
-
                 </div>
                 <div id="cardType">
-                    {getCardIcon() && <FontAwesomeIcon icon={getCardIcon() as IconDefinition} className="h-[40px]" />}
+                    {getCardIcon() && (
+                        <FontAwesomeIcon icon={getCardIcon() as IconDefinition} className="h-[40px]" />
+                    )}
                 </div>
-
             </div>
         </div>
-    )
+    );
 }
