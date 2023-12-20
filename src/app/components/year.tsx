@@ -14,7 +14,7 @@ interface ITransaction {
     month: number;
     year: number;
     transactionBalance: number;
-    // Add any other properties as needed
+
 }
 
 export function YearTransactions() {
@@ -56,8 +56,18 @@ export function YearTransactions() {
                 // If updating transactionType, use the selected transaction type label
                 updatedTransaction[key] = typeof value === 'string' ? (value as string) : (value as { label: string }).label;
             } else if (key === 'transactionBalance') {
-                // Ensure that the balance is treated as a number
-                updatedTransaction[key] = parseFloat(value as string);
+                // Ensure that the balance is treated as a number with 2 decimals
+                let numericValue = value === '' ? 0 : parseFloat(value as string);
+
+                // If the balance is not a number or is NaN, default to 0
+                if (isNaN(numericValue)) {
+                    numericValue = 0;
+                }
+
+                // Round the numeric value to 2 decimals
+                numericValue = parseFloat(numericValue.toFixed(2));
+
+                updatedTransaction[key] = numericValue;
             } else {
                 // For other properties, directly set the value
                 updatedTransaction[key] = typeof value === 'string' ? value : (value as { label: string }).label;
@@ -66,6 +76,8 @@ export function YearTransactions() {
             setEditTransaction(updatedTransaction);
         }
     };
+
+
 
     const handleSave = () => {
         if (editTransaction) {
@@ -151,11 +163,16 @@ export function YearTransactions() {
                                                 max={9999}
                                             />
                                         </div>
-                                        <input className="bg-app-base p-2 text-center rounded"
+                                        <input
+                                            className="bg-app-base p-2 text-center rounded"
                                             type="number"
-                                            value={editTransaction?.transactionBalance || 0}
+                                            value={editTransaction?.transactionBalance === 0 ? '' : editTransaction?.transactionBalance || ''}
                                             onChange={(e) => handleInputChange('transactionBalance', e.target.value)}
                                             placeholder="Balance"
+                                            onFocus={(e) => e.target.select()} // Select text on focus
+                                            onContextMenu={(e) => e.preventDefault()} // Prevent default context menu
+                                            min={0} // Ensure positive or zero values
+                                            step="0.01" // Allow 2 decimal places
                                         />
                                     </div>
                                 </>

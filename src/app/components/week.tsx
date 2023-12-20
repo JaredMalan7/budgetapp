@@ -170,11 +170,16 @@ export function WeekTransactions() {
                                                     max={9999}
                                                 />
                                             </div>
-                                            <input className="bg-app-base p-2 text-center rounded"
+                                            <input
+                                                className="bg-app-base p-2 text-center rounded"
                                                 type="number"
-                                                value={editTransaction?.transactionBalance || 0}
+                                                value={editTransaction?.transactionBalance === 0 ? '' : editTransaction?.transactionBalance || ''}
                                                 onChange={(e) => handleInputChange('transactionBalance', e.target.value)}
                                                 placeholder="Balance"
+                                                onFocus={(e) => e.target.select()} // Select text on focus
+                                                onContextMenu={(e) => e.preventDefault()} // Prevent default context menu
+                                                min={0} // Ensure positive or zero values
+                                                step="0.01" // Allow 2 decimal places
                                             />
                                         </div>
                                     </>
