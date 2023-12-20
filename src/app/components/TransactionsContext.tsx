@@ -14,7 +14,7 @@ interface ITransaction {
 // Define IUser interface for the entire user object
 interface IUser {
     user_id: number;
-    username: string;
+    name: string;
     budget: number;
     card: {
         "card#": string;

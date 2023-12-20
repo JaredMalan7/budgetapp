@@ -151,15 +151,23 @@ export function CreditCard() {
                 ></div>
             </div>
             <div className="flex justify-between place-items-center text-white">
-                <div className="flex gap-8">
+                {/* <div className="flex gap-8">
                     <div>****</div>
                     <div>****</div>
                     <div id="cardNumber">{cardNumber}</div>
+                </div> */}
+                <div className="flex gap-8">
+                    <div>****</div>
+                    <div>****</div>
+                    <div id="cardNumber">435</div>
                 </div>
-                <div id="cardType">
+                {/* <div id="cardType">
                     {getCardIcon() && (
                         <FontAwesomeIcon icon={getCardIcon() as IconDefinition} className="h-[40px]" />
                     )}
+                </div> */}
+                <div id="cardType">
+                    <FontAwesomeIcon icon={faCcDiscover} className="h-[40px]" />
                 </div>
             </div>
         </div>
