@@ -5,7 +5,7 @@ import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils
 import { useTransactions } from "./TransactionsContext";
 import { TransactionsMenu } from "./transactionmenu";
 
-// Define the ITransaction type
+
 interface ITransaction {
     transactionId: number;
     transactionType: string;

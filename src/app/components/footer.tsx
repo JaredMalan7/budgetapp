@@ -32,17 +32,15 @@ export function Footer() {
                     ],
                 };
 
-                // Update local storage with the new user object
                 localStorage.setItem("user", JSON.stringify(updatedUser));
 
                 return updatedUser;
             });
 
-            // Update newTransaction state for the next transaction
             setNewTransaction((prevTransaction) => ({
                 ...prevTransaction,
                 transactionId: prevTransaction.transactionId + 1,
-                // Add logic for other properties if needed
+
             }));
         } catch (error) {
             console.error('Error adding transaction:', error);

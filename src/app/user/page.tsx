@@ -4,7 +4,10 @@ import { faCircleArrowLeft, faUserPen, faDownload } from "@fortawesome/free-soli
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const User = () => {
-    // Function to get the initial user state
+    // Function to get the initial user state // This code still needs work as errors are still encountered when refreshing the user page from the user page
+    // this is due to the initial user state being userName, once the name of the user is edited, the userName is no longer the initial state,
+    //however, that still is the initial state of the context, so changes may need to be made, unfortunately because I was limited by only doing front-end,
+    // I do not have the knowledge to do that yet, but I am hoping that by the end of the back-end slides I know how to do this part. 
     const getInitialUserState = () => {
         // Check if running on the client side
         if (typeof window !== 'undefined') {
@@ -51,7 +54,7 @@ const User = () => {
         }
     }, [user]);
 
-    // Handle edit button click
+
     const handleEditClick = () => {
         setUserInput({
             userName: user.name,
@@ -61,7 +64,6 @@ const User = () => {
         setEditMode(true);
     };
 
-    // Handle save button click
     const handleSaveClick = () => {
         if (Object.values(userInput).every((value) => value !== "")) {
             setUser({
@@ -81,7 +83,7 @@ const User = () => {
         }
     };
 
-    // Handle go back button click
+
     const handleGoBackClick = () => {
         window.history.back();
     };

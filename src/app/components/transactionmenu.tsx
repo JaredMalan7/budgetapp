@@ -40,7 +40,7 @@ export const TransactionsMenu: React.FC<TransactionsMenuProps> = ({ selectedItem
 
     const handleInternalItemSelect = (item: any) => {
         setInternalSelectedItem(item);
-        handleItemSelect(item); // Pass the selected item to the parent component
+        handleItemSelect(item); // Passes the selected item to the parent component
     };
 
     return (

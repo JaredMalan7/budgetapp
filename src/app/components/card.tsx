@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTransactions } from "./TransactionsContext";
 
-// Define the ITransaction type
+// Defines the ITransaction type
 interface ITransaction {
     transactionId: number;
     transactionType: string;
@@ -22,7 +22,7 @@ interface ITransaction {
     transactionBalance: number;
 }
 
-// Define the IUser type
+// Defines the IUser type
 interface IUser {
     user_id: number;
     username: string;
@@ -35,7 +35,7 @@ interface IUser {
     transactions: ITransaction[];
 }
 
-// Define the State type
+// Defines the State type
 interface State {
     balance: string;
     cardNumber: string;
@@ -46,7 +46,7 @@ interface State {
     progressWidth: string;
 }
 
-// Define the Action type
+// Defines the Action type
 type Action =
     | { type: "SET_BALANCE"; payload: string }
     | { type: "SET_CARD_NUMBER"; payload: string }
@@ -56,7 +56,7 @@ type Action =
     | { type: "SET_TRANSACTIONS"; payload: ITransaction[] }
     | { type: "SET_PROGRESS_WIDTH"; payload: string };
 
-// Define the reducer function
+// Defines the reducer function
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
         case "SET_BALANCE":
@@ -90,7 +90,7 @@ export function CreditCard() {
         progressColor: "#0073ff",
         budget: 0,
         transactions: [],
-        progressWidth: "0%", // Added this line
+        progressWidth: "0%",
     });
 
     useEffect(() => {

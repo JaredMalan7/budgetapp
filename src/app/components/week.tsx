@@ -6,7 +6,7 @@ import { useTransactions } from "./TransactionsContext";
 import { TransactionsMenu } from "./transactionmenu";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
-// Define the ITransaction type
+
 interface ITransaction {
     transactionId: number;
     transactionType: string;
@@ -15,7 +15,7 @@ interface ITransaction {
     month: number;
     year: number;
     transactionBalance: number;
-    // Add any other properties as needed
+
 }
 
 export function WeekTransactions() {
@@ -185,7 +185,6 @@ export function WeekTransactions() {
                                     </>
                                 ) : (
                                     <div className="text-center">
-                                        {/* Show values when not editing */}
                                         <p className="font-bold">{transaction.transactionName}</p>
                                         <i className="text-light-text">{transaction.month}-{transaction.day}-{transaction.year}</i>
                                     </div>

@@ -5,7 +5,7 @@ import { faCar, faHouseCrack, faHouse, faHouseUser, faBasketShopping, faUtensils
 import { useTransactions } from "./TransactionsContext";
 import { TransactionsMenu } from "./transactionmenu";
 
-// Define the ITransaction type
+
 interface ITransaction {
     transactionId: number;
     transactionType: string;
@@ -14,7 +14,7 @@ interface ITransaction {
     month: number;
     year: number;
     transactionBalance: number;
-    // Add any other properties as needed
+
 }
 
 export function MonthTransactions() {
@@ -56,7 +56,7 @@ export function MonthTransactions() {
                 // If updating transactionType, use the selected transaction type label
                 updatedTransaction[key] = typeof value === 'string' ? (value as string) : (value as { label: string }).label;
             } else if (key === 'transactionBalance') {
-                // Ensure that the balance is treated as a number
+                // this is to ensure that the balance is treated as a number
                 updatedTransaction[key] = parseFloat(value as string);
             } else {
                 // For other properties, directly set the value

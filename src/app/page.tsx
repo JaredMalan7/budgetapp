@@ -1,5 +1,7 @@
 'use client'
 
+
+// this this is host page/landing page, all components come together here. 
 import React from "react";
 import { Greet, CreditCard, PageTabs, Footer, BudgetOverview } from "./components";
 import { TransactionsProvider } from "./components/TransactionsContext";
